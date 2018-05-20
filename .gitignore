@@ -2,3 +2,6 @@
 
 #web2py packages
 *.w2p
+
+/web2py/gluon/*
+
