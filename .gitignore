@@ -1,6 +1,6 @@
 
 
 #web2py package
-/images/*
-/web2py/*!applications
+images/*
+web2py/!applications
 
