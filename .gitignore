@@ -1,5 +1,7 @@
 #web2py package
 images
-web2py/*
-!**/applications/*
+*
+!*.py
+!*.html
+!*.js
 
