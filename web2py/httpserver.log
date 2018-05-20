@@ -12829,3 +12829,5 @@ css, HTTP/1.1, 200, 0.002000
 127.0.0.1, 2018-05-19 16:50:51, GET, /Xplo_testing_2/static/js/marked.min.js, HTTP/1.1, 200, 0.001000
 127.0.0.1, 2018-05-19 16:50:51, GET, /Xplo_testing_2/static/js/vue.min.js, HTTP/1.1, 200, 0.001000
 127.0.0.1, 2018-05-19 16:51:00, GET, /favicon.ico, HTTP/1.1, 400, 0.000000
+127.0.0.1, 2018-05-19 17:03:52, GET, /Xplo_testing/default/index, HTTP/1.1, 500, 0.182000
+127.0.0.1, 2018-05-19 17:03:56, GET, /favicon.ico, HTTP/1.1, 400, 0.000000
