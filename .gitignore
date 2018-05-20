@@ -1,7 +1,6 @@
 
 
-#web2py packages
-*.w2p
-
-/web2py/gluon/*
+#web2py package
+/images/*
+/web2py/*!applications
 
