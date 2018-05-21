@@ -13,7 +13,18 @@ div.main_content {
 }
 
 .mdl-textfield {
-  display: flex;
+  display: inline-flex;
+}
+
+.mdl-layout__drawer {
+  /*display: flex;
+  align-items: center;*/
+}
+
+.mdl-card {
+  height: auto !important;
+  width: 80% !important;
+  align-self: center;
 }
 
 /* rules for the embedded google map element */
@@ -23,7 +34,7 @@ div.main_content {
 }
 
 #logo {
-  min-height: 100%;
+  max-height: 60%;
   width: auto;
-  padding-right: 500px;
+  flex: 1;
 }
