@@ -4,6 +4,7 @@ cache
 databases
 errors
 sessions
+gluon
 
 # inherit https://github.com/github/gitignore/blob/master/Python.gitignore
 
