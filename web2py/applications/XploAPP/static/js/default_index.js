@@ -28,7 +28,7 @@ var app = function() {
 
     return self;
 };
-
+$("#map").focus;
 var APP = null;
 
 // This will make everything accessible from the js console;

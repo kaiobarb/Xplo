@@ -21,16 +21,49 @@ div.main_content {
   align-items: center;*/
 }
 
-.mdl-card {
-  height: auto !important;
-  width: 80% !important;
-  align-self: center;
-}
+#map-wrapper {position: relative;}
 
 /* rules for the embedded google map element */
 #map {
   height: 100%;
   width: 100%;
+}
+
+.cover {
+  position:absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cover > div { pointer-events: all; }
+
+#button-bar {
+  height: 100%;
+  padding-left: 2em;
+  padding-top: 4em;
+  float: left;
+  z-index: 1;
+}
+
+#card-container {
+  display: flex;
+  width  : 25%;
+  height : 100%;
+  background: transparent;
+  position: absolute;
+  top: 0px; 
+  right: 0px;
+  z-index: 99;
+}
+
+.mdl-card {
+  height: auto;
+  width: auto;
+  align-self: center;
+  margin: auto;
 }
 
 #logo {
