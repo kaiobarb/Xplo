@@ -2,6 +2,7 @@
 # for web2py
 cache
 databases
+database
 errors
 sessions
 gluon

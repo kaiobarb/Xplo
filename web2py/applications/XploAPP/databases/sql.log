@@ -1,5 +1,5 @@
-timestamp: 2018-04-25T13:31:11.132000
-CREATE TABLE "web2py_session_start"(
+timestamp: 2018-05-21T22:18:07.858000
+CREATE TABLE "web2py_session_XploAPP"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "locked" CHAR(1),
     "client_ip" CHAR(64),
@@ -9,7 +9,7 @@ CREATE TABLE "web2py_session_start"(
     "session_data" BLOB
 );
 success!
-timestamp: 2018-04-25T13:31:11.212000
+timestamp: 2018-05-21T22:18:07.886000
 CREATE TABLE "auth_user"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "first_name" CHAR(128),
@@ -21,21 +21,21 @@ CREATE TABLE "auth_user"(
     "registration_id" CHAR(512)
 );
 success!
-timestamp: 2018-04-25T13:31:11.256000
+timestamp: 2018-05-21T22:18:07.923000
 CREATE TABLE "auth_group"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "role" CHAR(512),
     "description" TEXT
 );
 success!
-timestamp: 2018-04-25T13:31:11.291000
+timestamp: 2018-05-21T22:18:07.947000
 CREATE TABLE "auth_membership"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
     "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  
 );
 success!
-timestamp: 2018-04-25T13:31:11.322000
+timestamp: 2018-05-21T22:18:07.983000
 CREATE TABLE "auth_permission"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  ,
@@ -44,7 +44,7 @@ CREATE TABLE "auth_permission"(
     "record_id" INTEGER
 );
 success!
-timestamp: 2018-04-25T13:31:11.384000
+timestamp: 2018-05-21T22:18:08.009000
 CREATE TABLE "auth_event"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "time_stamp" TIMESTAMP,
@@ -54,7 +54,7 @@ CREATE TABLE "auth_event"(
     "description" TEXT
 );
 success!
-timestamp: 2018-04-25T13:31:11.421000
+timestamp: 2018-05-21T22:18:08.044000
 CREATE TABLE "auth_cas"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
@@ -64,7 +64,7 @@ CREATE TABLE "auth_cas"(
     "renew" CHAR(1)
 );
 success!
-timestamp: 2018-04-25T13:31:11.465000
+timestamp: 2018-05-21T22:18:08.068000
 CREATE TABLE "checklist"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_email" CHAR(512),
@@ -73,6 +73,7 @@ CREATE TABLE "checklist"(
     "updated_on" TIMESTAMP
 );
 success!
+<<<<<<< HEAD
 timestamp: 2018-04-25T14:08:36.340000
 ALTER TABLE "checklist" ADD "is_public" CHAR(1);
 success!
@@ -2111,3 +2112,5 @@ ALTER TABLE "user_stories" ADD "longitude" CHAR(512);
 timestamp: 2018-06-01T21:09:44.759130
 ALTER TABLE "user_stories" ADD "latitude" CHAR(512);
 success!
+=======
+>>>>>>> 12bfbf039ec2f9ac25aac52876c41e0b2603338a
