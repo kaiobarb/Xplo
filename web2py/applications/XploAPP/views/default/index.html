@@ -1,9 +1,13 @@
 {{extend 'layout.html'}}
 
 {{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+  var add_story_url = "{{=URL('api', 'add_story')}}";
+</script>
 {{end}}
 
-<div class="main_content">
+<div id="vue-div" class="main_content">
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <!--HEADER -->
     <header class="mdl-layout__header">
@@ -52,7 +56,7 @@
     <!-- BUTTON -->
     <!-- Colored FAB button -->
     <div id="button-bar">
-      <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+      <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
       <i class="material-icons">add</i>
     </button>
     </div>
@@ -75,13 +79,14 @@
         </div>
       </div>
     </div>
-    <!-- MAP -->
-
-
-
   </div> 
+  <!-- MAP -->
   <div class="page-content" id="map"></div> 
 </main>
 
 </div>
 </div>
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
+<!-- <script src="{{=URL('static', 'maps.js')}}"></script>
+ -->
