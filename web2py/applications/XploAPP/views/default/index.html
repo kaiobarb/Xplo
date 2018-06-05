@@ -1,0 +1,92 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+  var add_story_url = "{{=URL('api', 'add_story')}}";
+</script>
+{{end}}
+
+<div id="vue-div" class="main_content">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <!--HEADER -->
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+        mdl-textfield--floating-label mdl-textfield--align-right">
+        <img id="logo" src="../static/images/xplo_logo.png" alt="logo">
+        <label class="mdl-button mdl-js-button mdl-button--icon"
+        for="fixed-header-drawer-exp">
+        <i class="material-icons">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="text" name="sample"
+        id="fixed-header-drawer-exp">
+      </div>
+    </div>
+  </div>
+</header>
+<!-- DRAWER -->
+<div class="mdl-layout__drawer">
+  <span class="mdl-layout-title">Stories</span>
+  <nav class="mdl-navigation">
+    <!-- CARD -->
+    <div class="mdl-card mdl-shadow--4dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">title Text Goes Here</h2>
+      </div>
+      <div class="mdl-card__media">
+        <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+      </div>
+      <div class="mdl-card__supporting-text">
+        This text might describe the photo and provide further information, such as where and
+        when it was taken.
+      </div>
+      <div class="mdl-card__actions">
+        <a href="(URL or function)">Related Action</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<main class="mdl-layout__content" id="wrapper">
+  <div id="map-overlay" class="cover">
+    <!-- BUTTON -->
+    <!-- Colored FAB button -->
+    <div id="button-bar">
+      <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+      <i class="material-icons">add</i>
+    </button>
+    </div>
+    <!-- CARD CONTAINER -->
+    <div id="card-container">
+      <!-- CARD -->
+      <div class="mdl-card mdl-shadow--4dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">title Text Goes Here</h2>
+        </div>
+        <div class="mdl-card__media">
+          <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+        </div>
+        <div class="mdl-card__supporting-text">
+          This text might describe the photo and provide further information, such as where and
+          when it was taken.
+        </div>
+        <div class="mdl-card__actions">
+          <a href="(URL or function)">Related Action</a>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <!-- MAP -->
+  <div class="page-content" id="map"></div> 
+</main>
+
+</div>
+</div>
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
+<!-- <script src="{{=URL('static', 'maps.js')}}"></script>
+ -->
