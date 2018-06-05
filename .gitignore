@@ -1,11 +1,11 @@
-#web2py packag
+#g
 # for web2py
-cache
-databases
-database
-errors
-sessions
-gluon
+cache/
+databases/
+database/
+errors/
+sessions/
+gluon/
 
 # inherit https://github.com/github/gitignore/blob/master/Python.gitignore
 
