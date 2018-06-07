@@ -1,13 +1,13 @@
 // This is the js for the default/index.html view.
-// 
-var app = function() {
+
+var app = function () {
 
     var self = {};
 
     Vue.config.silent = false; // show all warnings
 
     // Extends an array
-    self.extend = function(a, b) {
+    self.extend = function (a, b) {
         for (var i = 0; i < b.length; i++) {
             a.push(b[i]);
         }
@@ -17,38 +17,38 @@ var app = function() {
     // returns: a marker object
     self.placeMarker = function placeMarker(location) {
         var marker = new google.maps.Marker({
-            position: location, 
+            position: location,
             map: map
         });
         return marker
     }
 
-    self.add_story_button = function() {
-        console.log("before: ",self.is_adding);
+    self.add_story_button = function () {
+        console.log("before: ", self.is_adding);
         self.is_adding = !self.is_adding;
-        console.log("after: ",self.is_adding);
+        console.log("after: ", self.is_adding);
         self.add_story();
     }
 
-    self.add_story = function() {
+    self.add_story = function () {
         var marker = null;
-        console.log("pre: ",self.is_adding);
+        console.log("pre: ", self.is_adding);
         if (self.is_adding) {
-            listener = map.addListener('click', function(event) {
+            listener = map.addListener('click', function (event) {
                 marker = self.placeMarker(event.latLng);
                 $.post(add_story_url,
-                {
-                    lat: marker.position.lat,
-                    lng: marker.position.lng,
-                },
-                function(data) {
-                    google.maps.event.removeListener(listener);
-                    self.is_adding = !self.is_adding;
-                    console.log("done: ",self.is_adding);
-                }
-            )
+                    {
+                        lat: marker.position.lat,
+                        lng: marker.position.lng,
+                    },
+                    function (data) {
+                        google.maps.event.removeListener(listener);
+                        self.is_adding = !self.is_adding;
+                        console.log("done: ", self.is_adding);
+                    }
+                )
             });
-        }   
+        }
     };
 
     // Complete as needed.
@@ -76,4 +76,4 @@ var APP = null;
 
 // This will make everything accessible from the js console;
 // for instance, self.x above would be accessible as APP.x
-jQuery(function(){APP = app();});
+jQuery(function () { APP = app(); });
