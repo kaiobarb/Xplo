@@ -5,6 +5,9 @@ database/
 errors/
 sessions/
 gluon/
+__init__.py
+__init__.pyc
+web2py/parameters_8000.py
 
 # inherit https://github.com/github/gitignore/blob/master/Python.gitignore
 
