@@ -44,3 +44,4 @@ pip-log.txt
 httpserver.*
 parameters_8000.py
 fluff/
+.DS_Store
