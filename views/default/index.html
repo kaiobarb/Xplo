@@ -13,10 +13,14 @@
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
 
-        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-layout-spacer">
+          <img id="logo" src="../static/images/xplo_logo.png" alt="logo">
+        </div>
+        <button @click="login_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Login
+        </button>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
         mdl-textfield--floating-label mdl-textfield--align-right">
-        <img id="logo" src="../static/images/xplo_logo.png" alt="logo">
         <label class="mdl-button mdl-js-button mdl-button--icon"
         for="fixed-header-drawer-exp">
         <i class="material-icons">search</i>
@@ -26,6 +30,7 @@
         id="fixed-header-drawer-exp">
       </div>
     </div>
+
   </div>
 </header>
 <!-- DRAWER -->
@@ -57,8 +62,8 @@
     <!-- Colored FAB button -->
     <div id="button-bar">
       <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-      <i class="material-icons">add</i>
-    </button>
+        <i class="material-icons">add</i>
+      </button>
     </div>
     <!-- CARD CONTAINER -->
     <div id="card-container">

@@ -6,6 +6,10 @@ var app = function() {
 
     Vue.config.silent = false; // show all warnings
 
+    self.login_redirect = function() {
+        window.location = "/Xplo/default/user/login";
+    }
+
     // Extends an array
     self.extend = function(a, b) {
         for (var i = 0; i < b.length; i++) {
@@ -66,6 +70,7 @@ var app = function() {
         methods: {
             add_story: self.add_story,
             add_story_button: self.add_story_button,
+            login_redirect: self.login_redirect,
         }
 
     });
