@@ -15,3 +15,7 @@ def add_story():
 		latitude = request.vars.lat,
 		longitude = request.vars.lng,
 	) ) )
+
+def delete_story():
+	db((db.user_stories.latitude == request.vars.lat) & (db.user_stories.longitude == request.vars.lng)).delete()
+	return "ok"

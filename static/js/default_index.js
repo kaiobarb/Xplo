@@ -108,6 +108,12 @@ var app = function () {
       console.log("made it");
       //map.addListener(marker, 'click', function (point) { id = this.__gm_id; self.delMarker(id)});
       marker.setMap(null);
+      $.post(delete_url,
+          {
+              lat: marker.position.lat,
+              lng: marker.position.lng,
+          }
+      )
       self.vue.deletevar = !self.vue.deletevar;
       console.log(self.vue.deletevar);
    };
