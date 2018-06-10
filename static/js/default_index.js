@@ -114,7 +114,7 @@ var app = function () {
         body: body
       },
       function (data) {
-        self.get_all_stories(); //update the stories list
+        // self.get_all_stories(); //update the stories list
         // self.vue.stories.unshift(data.story);
 
       }
@@ -129,15 +129,6 @@ var app = function () {
       console.log("delete called");
     }
   }
-
-
-  self.delete_story_button = function (marker) {
-    console.log("made it");
-    //map.addListener(marker, 'click', function (point) { id = this.__gm_id; self.delMarker(id)});
-    marker.setMap(null);
-    self.vue.deletevar = !self.vue.deletevar;
-    console.log(self.vue.deletevar);
-  };
 
 
   self.deleteins = function () {
@@ -159,7 +150,11 @@ var app = function () {
           var long = story.longitude;
           var latlong = new google.maps.LatLng(lat, long);
 
-          self.placeMarker(latlong);
+          var marker = self.placeMarker(latlong);
+
+          marker.addListener('click', function () {
+            self.marker_clicked(marker)
+          })
         }
       }
     )
