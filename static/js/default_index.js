@@ -75,6 +75,7 @@ var app = function () {
         )
     }
 
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
