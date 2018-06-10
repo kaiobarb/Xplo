@@ -34,3 +34,19 @@ def get_all_stories():
     return response.json(dict(
         stories=stories
     ))
+
+
+def search():
+    phrase = str(request.vars.search_phrase)
+    print "search for: ", phrase
+
+    results = []
+
+    rows = db((db.user_stories.title.contains(phrase)) | (db.user_stories.body.contains(phrase))).select()
+
+    for r in rows:
+        results.append(r)
+
+    return response.json(dict(
+        results=results
+    ))
