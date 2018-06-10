@@ -21,7 +21,16 @@ div.main_content {
   align-items: center;*/
 }
 
+.color-drop { background-color: #009688; }
+.color-drop-complement { background-color: #7FCAC3; }
+
 #map-wrapper {position: relative;}
+
+.centered {
+  width: 50%;
+  height: 100%;
+  margin: auto;
+}
 
 /* rules for the embedded google map element */
 #map {
@@ -92,5 +101,4 @@ margin-right: auto;
 left: 0;
 right: 0;
 bottom: 0;
-
 }
