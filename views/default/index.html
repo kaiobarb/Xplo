@@ -55,19 +55,18 @@
   <main class="mdl-layout__content" id="wrapper">
     <div id="map-overlay" class="cover">
       <!-- CONFIRM DIV -->
-
-      <div id="confirm-location-container" v-if="confirming">
-        <div class="mdl-card mdl-shadow--4dp">
-          <div class="confirm text">
-            Do you want to confirm at this location?
+      <div id="confirm-location-container" v-if="confirming" class="absolute">
+        <div class="mdl-card mdl-shadow--4dp" class="bottom-popup">
+          <div class="mdl-card__supporting-text">
+            Do you want to place a marker at this location?
           </div>
-          <div class="buttons container">
-            <div class="half">
-              <button v-on:click="confirm_button(true)">Yes</button>
-            </div>
-            <div class="half">
-              <button v-on:click="confirm_button(false)">No</button>
-            </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <a v-on:click="confirm_button(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Yes
+            </a>
+            <a v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              No
+            </a>
           </div>
         </div>
       </div>
