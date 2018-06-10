@@ -1,5 +1,5 @@
 // This is the js for the default/index.html view.
-// 
+//
 var app = function () {
 
     var self = {};
@@ -34,8 +34,8 @@ var app = function () {
 
    self.placeMarker = function placeMarker(location) {
         var marker = new google.maps.Marker({
-            position: location, 
-            map: map
+            position: location,
+            map: map,
         });
         return marker
     }
@@ -82,6 +82,10 @@ var app = function () {
 
    self.add_story = function (marker) {
         console.log("add_story")
+        marker.addListener('click', function () {
+            self.marker_clicked(marker)
+        })
+
        $.post(add_story_url,
            {
                lat: marker.position.lat,
@@ -91,6 +95,31 @@ var app = function () {
    }
 
 
+    self.marker_clicked = function (mark) {
+          console.log("clicked marker: ")
+          if(self.vue.deletevar){
+            self.delete_story_button(mark);
+            console.log("delete called");
+          }
+    }
+
+
+   self.delete_story_button = function(marker){
+      console.log("made it");
+      //map.addListener(marker, 'click', function (point) { id = this.__gm_id; self.delMarker(id)});
+      marker.setMap(null);
+      self.vue.deletevar = !self.vue.deletevar;
+      console.log(self.vue.deletevar);
+   };
+
+  /* self.delMarker = function(id){
+     var marker = self.vue.locations[id];
+    marker.setMap(null);
+  };*/
+
+  self.deleteins = function(){
+    self.vue.deletevar = !self.vue.deletevar;
+  };
 
     // Complete as needed.
     self.vue = new Vue({
@@ -107,6 +136,8 @@ var app = function () {
             stories: [1, 2, 3],
             logged_in: false,
             confirming: false,
+            id:0,
+            deletevar:false,
         },
         methods: {
             add_story: self.add_story,
@@ -115,6 +146,10 @@ var app = function () {
             confirm_button: self.confirm_button,
             confirm_location: self.confirm_location,
 
+            delMarker: self.delMarker,
+            delete_story_button: self.delete_story_button,
+            marker_clicked: self.marker_clicked,
+            deleteins: self.deleteins,
         }
 
     });

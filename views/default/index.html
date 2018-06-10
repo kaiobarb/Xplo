@@ -77,6 +77,9 @@
         <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
           <i class="material-icons">add</i>
         </button>
+        <button v-on:click="deleteins" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+          <i class="material-icons">delete</i>
+        </button>
       </div>
       <!-- CARD CONTAINER -->
       <div id="card-container" class="column">
@@ -99,9 +102,9 @@
         </div>
       </div>
     </div>
-    <!-- MAP -->
-    <div class="page-content" id="map"></div>
-  </main>
+  <!-- MAP -->
+  <div class="page-content" id="map"></div>
+</main>
 
 </div>
 </div>
