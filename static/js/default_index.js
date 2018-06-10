@@ -45,8 +45,7 @@ var app = function () {
     if (confirmed) {
       if (placed_marker != null) {
         self.vue.entering_text = true;
-        //adds story in self.add_story after getting the input info in 
-        // enter_text_button
+        //adds story in self.add_story after getting the input info in enter_text_button
       } else {
         console.error("confirm_button error. placed_marker is null");
       }
@@ -85,11 +84,15 @@ var app = function () {
       {
         lat: marker.position.lat,
         lng: marker.position.lng,
+      },
+      function (data) {
+        self.get_all_stories(); //update list
       }
     )
     self.vue.deletevar = !self.vue.deletevar;
     console.log(self.vue.deletevar);
   };
+
   self.enter_text_button = function () {
     console.log("sharing story with world")
     self.vue.entering_text = false;
@@ -101,9 +104,9 @@ var app = function () {
   }
 
   self.add_story = function (marker, title, body) {
-    console.log("add_story")
+
     marker.addListener('click', function () {
-      self.marker_clicked(marker)
+      self.marker_clicked(this)
     })
 
     $.post(add_story_url,
@@ -114,8 +117,11 @@ var app = function () {
         body: body
       },
       function (data) {
-        // self.get_all_stories(); //update the stories list
-        // self.vue.stories.unshift(data.story);
+        //add marker to dict
+        id_as_string = String(data.story.id)
+        self.vue.marker_dict[id_as_string] = marker
+
+        self.get_all_stories(); //update the stories list
 
       }
     )
@@ -123,7 +129,6 @@ var app = function () {
 
 
   self.marker_clicked = function (mark) {
-    console.log("clicked marker: ")
     if (self.vue.deletevar) {
       self.delete_story_button(mark);
       console.log("delete called");
@@ -139,25 +144,40 @@ var app = function () {
     $.getJSON(get_all_stories_URL,
       function (data) {
         self.vue.stories = data.stories //sets the vue variable to the list of variables
+      }
+    )
+  }
 
+  self.place_all_markers = function (a) {
+
+    $.getJSON(get_all_stories_URL,
+      function (data) {
 
         //shows every marker
-        for (var index = 0; index < self.vue.stories.length; index++) {
+        var marker = null;
+        for (var index = 0; index < data.stories.length; index++) {
 
-          var story = self.vue.stories[index];
+          var story = data.stories[index];
 
           var lat = story.latitude;
           var long = story.longitude;
           var latlong = new google.maps.LatLng(lat, long);
 
-          var marker = self.placeMarker(latlong);
+          marker = self.placeMarker(latlong);
+
+          //add the marker object to the dict
+          var id_as_string = String(story.id)
+          self.vue.marker_dict[id_as_string] = marker
 
           marker.addListener('click', function () {
-            self.marker_clicked(marker)
+            self.marker_clicked(this)
           })
+          // marker.addListener('click', function () {
+          //   console.log("clicked: ", marker.getPosition().)
+          //   self.marker_clicked(marker)
+          // })
         }
-      }
-    )
+      })
   }
 
   //search
@@ -188,7 +208,8 @@ var app = function () {
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     mounted: function () {
-      setTimeout(function () { initMap(), self.get_all_stories(); }, 1000);
+      // setTimeout(function () { initMap(), self.get_all_stories(); self.place_all_markers() }, 1000);
+      setTimeout(function () { initMap(); self.place_all_markers(); self.get_all_stories(); }, 1000);
     },
 
     data: {
@@ -204,6 +225,8 @@ var app = function () {
       body_text: null,
       search_results: [],
       search_phrase: null,
+      marker_dict: {},
+
     },
     methods: {
       add_story: self.add_story,
@@ -219,6 +242,7 @@ var app = function () {
       get_all_stories: self.get_all_stories,
       search: self.search,
       search_button: self.search_button,
+      place_all_markers: self.place_all_markers,
     }
 
   });

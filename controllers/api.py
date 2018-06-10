@@ -15,6 +15,7 @@ def add_story():
     pass
     # rows = db(db.user_stories.location != None).select()
     return response.json(dict(story=dict(
+        id=t_id,
         latitude=request.vars.lat,
         longitude=request.vars.lng,
         created_by=auth.user_id,
