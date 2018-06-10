@@ -7,7 +7,14 @@ var app = function() {
     Vue.config.silent = false; // show all warnings
 
     self.login_redirect = function() {
+        self.logged_in = true;
         window.location = "/Xplo/default/user/login";
+    }
+
+    self.logout_redirect = function() {
+        self.logged_in = false;
+        window.location = "/Xplo/default/user/logout";
+
     }
 
     // Extends an array
@@ -60,12 +67,15 @@ var app = function() {
         el: "#vue-div",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
-        mounted() {
-            initMap();
+        mounted: function() {
+            setTimeout(function() { initMap() }, 1000) 
         },
+
         data: {
             is_adding: false,
             locations: [],
+            stories: [1, 2, 3],
+            logged_in: false,
         },
         methods: {
             add_story: self.add_story,

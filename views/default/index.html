@@ -16,8 +16,11 @@
         <div class="mdl-layout-spacer">
           <img id="logo" src="../static/images/xplo_logo.png" alt="logo">
         </div>
-        <button @click="login_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+        <button v-if="!logged_in" @click="login_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
           Login
+        </button>
+        <button v-if="logged_in" @click="logout_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Logout
         </button>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
         mdl-textfield--floating-label mdl-textfield--align-right">
@@ -66,11 +69,12 @@
       </button>
     </div>
     <!-- CARD CONTAINER -->
-    <div id="card-container">
+    <div id="card-container" class="column">
       <!-- CARD -->
-      <div class="mdl-card mdl-shadow--4dp">
+      <div v-for="story in stories" >
+        <div class="mdl-card mdl-shadow--4dp">
         <div class="mdl-card__title">
-          <h2 class="mdl-card__title-text">title Text Goes Here</h2>
+          <h2 class="mdl-card__title-text">${story}</h2>
         </div>
         <div class="mdl-card__media">
           <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
@@ -83,6 +87,8 @@
           <a href="(URL or function)">Related Action</a>
         </div>
       </div>
+      </div>
+      
     </div>
   </div> 
   <!-- MAP -->
