@@ -101,7 +101,9 @@ var app = function () {
                 body: body
             },
             function (data) {
-                self.vue.stories.unshift(data.story);
+                self.get_all_stories(); //update the stories list
+                // self.vue.stories.unshift(data.story);
+
             }
         )
     }
@@ -124,15 +126,20 @@ var app = function () {
         console.log(self.vue.deletevar);
     };
 
-    /* self.delMarker = function(id){
-       var marker = self.vue.locations[id];
-      marker.setMap(null);
-    };*/
 
     self.deleteins = function () {
         self.vue.deletevar = !self.vue.deletevar;
     };
 
+    self.get_all_stories = function () {
+        $.getJSON(get_all_stories_URL,
+            function (data) {
+                console.log("done data")
+                console.log(data)
+                self.vue.stories = data.stories
+            }
+        )
+    }
 
     // Complete as needed.
     self.vue = new Vue({
@@ -140,7 +147,8 @@ var app = function () {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         mounted: function () {
-            setTimeout(function () { initMap() }, 1000)
+            setTimeout(function () { initMap() }, 1000);
+            self.get_all_stories();
         },
 
         data: {
@@ -166,6 +174,7 @@ var app = function () {
             marker_clicked: self.marker_clicked,
             deleteins: self.deleteins,
             enter_text_button: self.enter_text_button,
+            get_all_stories: self.get_all_stories,
         }
 
     });

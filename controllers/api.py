@@ -21,3 +21,16 @@ def add_story():
         title=request.vars.title,
         body=request.vars.body,
     )))
+
+
+def get_all_stories():
+    stories = []
+
+    rows = db().select(db.user_stories.ALL)
+
+    for r in rows:
+        stories.append(r)
+
+    return response.json(dict(
+        stories=stories
+    ))
