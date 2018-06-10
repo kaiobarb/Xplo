@@ -159,8 +159,7 @@ var app = function () {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         mounted: function () {
-            setTimeout(function () { initMap() }, 1000);
-            self.get_all_stories();
+            setTimeout(function () { initMap(),self.get_all_stories(); }, 1000);
         },
 
         data: {
