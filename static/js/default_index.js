@@ -134,9 +134,21 @@ var app = function () {
     self.get_all_stories = function () {
         $.getJSON(get_all_stories_URL,
             function (data) {
-                console.log("done data")
-                console.log(data)
-                self.vue.stories = data.stories
+                self.vue.stories = data.stories //sets the vue variable to the list of variables
+
+
+                //shows every marker
+                for (var index = 0; index < self.vue.stories.length; index++) {
+
+                    var story = self.vue.stories[index];
+                    console.log(story)
+
+                    var lat = story.latitude;
+                    var long = story.longitude;
+                    var latlong = new google.maps.LatLng(lat, long);
+
+                    self.placeMarker(latlong);
+                }
             }
         )
     }
