@@ -18,10 +18,10 @@ def index():
     return auth.wiki()
     """
     logger.info('The session is: %r' % session)
-    checklists = None
+    stories = None
     if auth.user is not None:
-        checklists = db(db.checklist.user_email == auth.user.email).select()
-    return dict(checklists=checklists)
+        stories = db(db.user_stories.created_by == auth.user.id).select()
+    return dict(checklists=stories)
 
 
 def no_swearing(form):

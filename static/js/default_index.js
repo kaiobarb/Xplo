@@ -6,6 +6,17 @@ var app = function() {
 
     Vue.config.silent = false; // show all warnings
 
+    self.login_redirect = function() {
+        self.logged_in = true;
+        window.location = "/Xplo/default/user/login";
+    }
+
+    self.logout_redirect = function() {
+        self.logged_in = false;
+        window.location = "/Xplo/default/user/logout";
+
+    }
+
     // Extends an array
     self.extend = function(a, b) {
         for (var i = 0; i < b.length; i++) {
@@ -56,16 +67,20 @@ var app = function() {
         el: "#vue-div",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
-        mounted() {
-            initMap();
+        mounted: function() {
+            setTimeout(function() { initMap() }, 1000) 
         },
+
         data: {
             is_adding: false,
             locations: [],
+            stories: [1, 2, 3],
+            logged_in: false,
         },
         methods: {
             add_story: self.add_story,
             add_story_button: self.add_story_button,
+            login_redirect: self.login_redirect,
         }
 
     });
