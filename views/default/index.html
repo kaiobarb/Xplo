@@ -21,74 +21,71 @@
         </button>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
         mdl-textfield--floating-label mdl-textfield--align-right">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
-          </div>
+        <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
         </div>
-
       </div>
-    </header>
-    <!-- DRAWER -->
-    <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Stories</span>
-      <nav class="mdl-navigation">
-        <!-- CARD -->
-        <div class="mdl-card mdl-shadow--4dp">
-          <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">title Text Goes Here</h2>
-          </div>
-          <div class="mdl-card__media">
-            <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
-          </div>
-          <div class="mdl-card__supporting-text">
-            This text might describe the photo and provide further information, such as where and when it was taken.
-          </div>
-          <div class="mdl-card__actions">
-            <a href="(URL or function)">Related Action</a>
-          </div>
-        </div>
-      </nav>
     </div>
+  </header>
+  <!-- DRAWER -->
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Stories</span>
+    <nav class="mdl-navigation">
+      <!-- CARD -->
+      <div class="mdl-card mdl-shadow--4dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">title Text Goes Here</h2>
+        </div>
+        <div class="mdl-card__media">
+          <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+        </div>
+        <div class="mdl-card__supporting-text">
+          This text might describe the photo and provide further information, such as where and when it was taken.
+        </div>
+        <div class="mdl-card__actions">
+          <a href="(URL or function)">Related Action</a>
+        </div>
+      </div>
+    </nav>
+  </div>
 
-    <main class="mdl-layout__content" id="wrapper">
-      <div id="map-overlay" class="cover">
-        <!-- CONFIRM DIV -->
+  <main class="mdl-layout__content" id="wrapper">
+    <div id="map-overlay" class="cover">
+      <!-- CONFIRM DIV -->
 
-        <div id="confirm-location-container" v-if="confirming">
-          <div class="mdl-card mdl-shadow--4dp">
-            <div class="confirm text">
-              Do you want to confirm at this location?
+      <div id="confirm-location-container" v-if="confirming">
+        <div class="mdl-card mdl-shadow--4dp">
+          <div class="confirm text">
+            Do you want to confirm at this location?
+          </div>
+          <div class="buttons container">
+            <div class="half">
+              <button v-on:click="confirm_button(true)">Yes</button>
             </div>
-            <div class="buttons container">
-              <div class="half">
-                <button v-on:click="confirm_button(true)">Yes</button>
-              </div>
-              <div class="half">
-                <button v-on:click="confirm_button(false)">No</button>
-              </div>
+            <div class="half">
+              <button v-on:click="confirm_button(false)">No</button>
             </div>
           </div>
         </div>
-        <!-- BUTTON -->
-        <!-- Colored FAB button -->
-        <div id="button-bar">
-          <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-            <i class="material-icons">add</i>
-          </button>
-        </div>
-        <!-- CARD CONTAINER -->
-        <div id="card-container" class="column">
-          <!-- CARD -->
-          <div v-for="story in stories">
-            <div class="mdl-card mdl-shadow--4dp">
-              <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">${story}</h2>
-              </div>
+      </div>
+      <!-- BUTTON -->
+      <!-- Colored FAB button -->
+      <div id="button-bar">
+        <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+          <i class="material-icons">add</i>
+        </button>
+      </div>
+      <!-- CARD CONTAINER -->
+      <div id="card-container" class="column">
+        <!-- CARD -->
+        <div v-for="story in stories">
+          <div class="mdl-card mdl-shadow--4dp">
+            <div class="mdl-card__title">
+              <h2 class="mdl-card__title-text">${story}</h2>
             </div>
-
             <div class="mdl-card__media">
               <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
             </div>
@@ -100,11 +97,10 @@
             </div>
           </div>
         </div>
-
       </div>
-  </div>
-  <!-- MAP -->
-  <div class="page-content" id="map"></div>
+    </div>
+    <!-- MAP -->
+    <div class="page-content" id="map"></div>
   </main>
 
 </div>

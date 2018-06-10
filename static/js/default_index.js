@@ -26,41 +26,71 @@ var app = function () {
 
     // args: a location consisting of a latitude and longitude
     // returns: a marker object
-    self.placeMarker = function placeMarker(location) {
+    self.add_story_button = function () {
+       self.is_adding = !self.is_adding;
+       self.confirm_location();
+       console.log("Button clicked")
+   }
+
+   self.placeMarker = function placeMarker(location) {
         var marker = new google.maps.Marker({
-            position: location,
+            position: location, 
             map: map
         });
         return marker
     }
 
-    self.add_story_button = function () {
-        console.log("before: ", self.is_adding);
-        self.is_adding = !self.is_adding;
-        console.log("after: ", self.is_adding);
-        self.add_story();
-    }
+   self.confirm_button = function (confirmed) {
+        console.log("confirm_button")
+       self.vue.confirming = false;
 
-    self.add_story = function () {
-        var marker = null;
-        console.log("pre: ", self.is_adding);
-        if (self.is_adding) {
-            listener = map.addListener('click', function (event) {
-                marker = self.placeMarker(event.latLng);
-                $.post(add_story_url,
-                    {
-                        lat: marker.position.lat,
-                        lng: marker.position.lng,
-                    },
-                    function (data) {
-                        google.maps.event.removeListener(listener);
-                        self.is_adding = !self.is_adding;
-                        console.log("done: ", self.is_adding);
-                    }
-                )
-            });
-        }
-    };
+       if (confirmed) {
+           if (placed_marker != null) {
+               self.add_story(placed_marker);
+           } else {
+               console.error("confirm_button error. placed_marker is null");
+           }
+       } else {
+           if (placed_marker != null) {
+               placed_marker.setMap(null);
+           } else {
+               console.error("confirm_button error. placed_marker is null");
+
+           }
+       }
+
+       placed_marker = null;
+   }
+
+   var placed_marker = null;
+   self.confirm_location = function () {
+        console.log("confirm_location")
+       if (self.is_adding) {
+           listener = map.addListener('click', function (event) {
+               console.log("clicked map")
+               placed_marker = self.placeMarker(event.latLng);
+               google.maps.event.removeListener(listener);
+               self.is_adding = !self.is_adding;
+
+
+               //confirm if you want to put it in this location
+               self.vue.confirming = true;
+
+           });
+       }
+   };
+
+   self.add_story = function (marker) {
+        console.log("add_story")
+       $.post(add_story_url,
+           {
+               lat: marker.position.lat,
+               lng: marker.position.lng,
+           }
+       )
+   }
+
+
 
     // Complete as needed.
     self.vue = new Vue({
@@ -76,11 +106,15 @@ var app = function () {
             locations: [],
             stories: [1, 2, 3],
             logged_in: false,
+            confirming: false,
         },
         methods: {
             add_story: self.add_story,
             add_story_button: self.add_story_button,
             login_redirect: self.login_redirect,
+            confirm_button: self.confirm_button,
+            confirm_location: self.confirm_location,
+
         }
 
     });
