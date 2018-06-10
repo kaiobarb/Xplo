@@ -10,4 +10,6 @@ uploads/*
 
 
 .DS_Store
+__init__.py
+modules/__init__.py
 
