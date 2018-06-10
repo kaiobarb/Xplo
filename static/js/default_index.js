@@ -56,6 +56,8 @@ var app = function () {
         } else {
             if (placed_marker != null) {
                 placed_marker.setMap(null);
+                self.vue.entering_text = false;
+                console.log(self.vue.entering_text)
             } else {
                 console.error("confirm_button error. placed_marker is null");
 
@@ -145,8 +147,6 @@ var app = function () {
                 for (var index = 0; index < self.vue.stories.length; index++) {
 
                     var story = self.vue.stories[index];
-                    console.log(story)
-
                     var lat = story.latitude;
                     var long = story.longitude;
                     var latlong = new google.maps.LatLng(lat, long);

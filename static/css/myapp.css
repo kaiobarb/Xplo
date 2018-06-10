@@ -23,6 +23,7 @@ div.main_content {
 
 .color-drop { background-color: #009688; }
 .color-drop-complement { background-color: #7FCAC3; }
+.dim {background-color: rgba(38, 12, 12, 0.44) !important}
 
 #map-wrapper {position: relative;}
 
@@ -67,6 +68,10 @@ div.main_content {
   z-index: 99;
   overflow-y: scroll;
 
+}
+
+.card-wide.mdl-card {
+  min-width: 50%
 }
 
 .mdl-card {

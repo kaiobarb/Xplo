@@ -72,13 +72,29 @@
           </div>
         </div>
 
-        <div v-if="entering_text">
-          <textarea id="title_text_area" v-model="title_text" cols="1" rows="1" placeholder="Enter the title here"></textarea>
-          <textarea id="body_text_area" v-model="body_text" cols="1" rows="2" placeholder="Enter the body here"></textarea>
-          <button v-on:click="enter_text_button">
-            Share your story with the world!
-          </button>
+        <div v-if="entering_text" class="dim cover">
+          <div  class="card-wide mdl-card mdl-shadow--2dp" v-on:blur="confirm_button(false)">
+          <div class="mdl-card__title">
+              <div class=" mdl-textfield mdl-js-textfield">
+                <input id="title_text_area" v-model="title_text" type="text" class="mdl-textfield__input">
+                <label class="mdl-textfield__label" for="title_text_area">Title</label>
+              </div>
+          </div>
+          
+          <div class="mdl-card__supporting-text">
+            <textarea id="body_text_area" v-model="body_text" cols="1" rows="2" placeholder="Enter the body here"></textarea>
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <button v-on:click="enter_text_button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Share your story with the world!
+            </button>
+            <button v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Cancel
+            </button>
+          </div>
         </div>
+        </div>
+        
 
         <!-- BUTTON -->
         <!-- Colored FAB button -->
