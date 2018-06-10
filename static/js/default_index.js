@@ -8,11 +8,13 @@ var app = function () {
 
     self.login_redirect = function () {
         self.logged_in = true;
+        sessionStorage.setItem("logged_in", self.logged_in.toString())
         window.location = "/Xplo/default/user/login";
     }
 
     self.logout_redirect = function () {
         self.logged_in = false;
+        sessionStorage.setItem("logged_in", self.logged_in.toString())
         window.location = "/Xplo/default/user/logout";
 
     }
@@ -45,6 +47,7 @@ var app = function () {
         if (confirmed) {
             if (placed_marker != null) {
                 self.vue.entering_text = true;
+                placed_marker.setAnimation(null);
                 //adds story in self.add_story after getting the input info in 
                 // enter_text_button
             } else {
@@ -65,6 +68,7 @@ var app = function () {
         if (self.is_adding) {
             listener = map.addListener('click', function (event) {
                 placed_marker = self.placeMarker(event.latLng);
+                placed_marker.setAnimation(google.maps.Animation.BOUNCE);
                 google.maps.event.removeListener(listener);
                 self.is_adding = !self.is_adding;
 
@@ -159,14 +163,17 @@ var app = function () {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         mounted: function () {
-            setTimeout(function () { initMap(),self.get_all_stories(); }, 1000);
+            setTimeout(function () { 
+                initMap(),
+                self.get_all_stories(); 
+            }, 1000);
         },
 
         data: {
             is_adding: false,
             locations: [],
             stories: [],
-            logged_in: false,
+            logged_in: (sessionStorage.getItem("logged_in") == "true"),
             confirming: false,
             id: 0,
             deletevar: false,
@@ -178,6 +185,7 @@ var app = function () {
             add_story: self.add_story,
             add_story_button: self.add_story_button,
             login_redirect: self.login_redirect,
+            logout_redirect: self.logout_redirect,
             confirm_button: self.confirm_button,
             confirm_location: self.confirm_location,
             delMarker: self.delMarker,

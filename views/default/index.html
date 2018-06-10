@@ -82,7 +82,7 @@
 
         <!-- BUTTON -->
         <!-- Colored FAB button -->
-        <div id="button-bar">
+        <div v-show="logged_in" id="button-bar">
           <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
             <i class="material-icons">add</i>
           </button>

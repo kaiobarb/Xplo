@@ -17,7 +17,8 @@ function initMap() {
 
   var marker = new google.maps.Marker({
     position: santacruz,
-    map: map
+    map: map,
+    animation: google.maps.Animation.DROP,
   });
 
   var styledMapType = new google.maps.StyledMapType(
