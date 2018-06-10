@@ -48,7 +48,7 @@ var app = function() {
                 console.log(" it");
                 //self.vue.id = marker.__gm_id;
                 //self.vue.locations[self.vue.id] = marker;
-                //its me
+                //its
                 marker.addListener('click', function () {
                     self.marker_clicked(marker,marker.title)
                 })
