@@ -9,13 +9,14 @@
 
 import datetime
 
+
 def get_user_email():
     return auth.user.email if auth.user is not None else None
 
 
 db.define_table('user_stories',
                 Field('created_on', 'datetime', default=request.now),
-                Field('created_by' ,'reference auth_user', default=auth.user_id),
+                Field('created_by', 'reference auth_user', default=auth.user_id),
                 Field('title', 'text'),
                 Field('body', 'text'),
                 Field('latitude'),
