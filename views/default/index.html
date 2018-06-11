@@ -15,8 +15,9 @@
       <div class="mdl-layout__header-row">
 
         <div id="search">
-          <input type="text" v-model="search_phrase"> ${search_phrase}
-          <button v-on:click="search_button">Search</button>
+          <input type="text" v-model="search_phrase">
+          <button v-if="search_results.length <= 0" v-on:click="search_button">Search</button>
+          <button v-if="search_results.length > 0" v-on:click="search_button">Cancel Search</button>
         </div>
 
         <div class="mdl-layout-spacer">

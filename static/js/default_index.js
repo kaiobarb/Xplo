@@ -207,6 +207,9 @@ var app = function () {
   self.search_button = function () {
     if (self.vue.search_phrase != null) {
       self.search()
+    } else {
+      self.vue.search_results = [];
+      self.vue.search_phrase = null;
     }
   }
   //search for phrases in db
