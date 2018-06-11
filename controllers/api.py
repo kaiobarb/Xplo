@@ -12,6 +12,13 @@ def add_story():
             title=request.vars.title,
             body=request.vars.body,
         )
+
+        heat_id = db.user_stories_heatmap.insert(
+            latitude=request.vars.lat,
+            longitude=request.vars.lng,
+            title=request.vars.title,
+            body=request.vars.body,
+        )
     pass
     # rows = db(db.user_stories.location != None).select()
     return response.json(dict(story=dict(
