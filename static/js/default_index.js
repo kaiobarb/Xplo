@@ -45,7 +45,7 @@ var app = function () {
     if (confirmed) {
       if (placed_marker != null) {
         self.vue.entering_text = true;
-        //adds story in self.add_story after getting the input info in 
+        //adds story in self.add_story after getting the input info in
         // enter_text_button
       } else {
         console.error("confirm_button error. placed_marker is null");
@@ -187,6 +187,20 @@ var app = function () {
     )
   }
 
+  self.expandins = function (store) {
+    self.vue.expandvar = !self.vue.expandvar;
+    self.vue.expandstory = store;
+    console.log(self.vue.expandvar);
+    console.log(self.vue.expandstory.created_by);
+  };
+
+  self.closeins = function () {
+    self.vue.expandvar = !self.vue.expandvar;
+    self.vue.expandstory = null;
+    console.log(self.vue.expandvar);
+    console.log(self.vue.expandstory);
+  };
+
   // Complete as needed.
   self.vue = new Vue({
     el: "#vue-div",
@@ -209,6 +223,8 @@ var app = function () {
       body_text: null,
       search_results: [],
       search_phrase: null,
+      expandvar: false,
+      expandstory: null,
     },
     methods: {
       add_story: self.add_story,
@@ -224,6 +240,8 @@ var app = function () {
       get_all_stories: self.get_all_stories,
       search: self.search,
       search_button: self.search_button,
+      expandins: self.expandins,
+      closeins: self.closeins,
     }
 
   });

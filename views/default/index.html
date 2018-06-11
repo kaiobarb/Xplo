@@ -138,9 +138,41 @@
               <div class="mdl-card__actions">
                 <a href="(URL or function)">Related Action</a>
               </div>
+              <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story)">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+                  Expand
+                </a>
+             </div>
             </div>
           </div>
         </div>
+
+        <div id="card-container" style="right:500px" v-if="expandvar">
+
+
+            <div class="mdl-card mdl-shadow--4dp">
+              <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">${expandstory.title}</h2>
+              </div>
+              <div class="mdl-card__media">
+                <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+              </div>
+              <div class="mdl-card__supporting-text" style="height:400px">
+
+                ${expandstory.body} User ID: ${expandstory.created_by}
+              </div>
+              <div class="mdl-card__actions">
+                <a href="(URL or function)">Related Action</a>
+              </div>
+              <div class="mdl-card__actions mdl-card--border" v-on:click="closeins">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
+                  Close
+                </a>
+             </div>
+            </div>
+
+        </div>
+
       </div>
       <!-- MAP -->
       <div class="page-content" id="map"></div>
