@@ -63,3 +63,20 @@ def search():
     return response.json(dict(
         results=results
     ))
+
+
+def get_heatmap_data():
+    heatmap_locations = []
+
+    rows = db().select(db.user_stories_heatmap.ALL)
+
+    for r in rows:
+        pos = dict(
+            lat=r.latitude,
+            long=r.longitude
+        )
+        heatmap_locations.append(pos)
+
+    return response.json(dict(
+        heatmap_locations=heatmap_locations
+    ))

@@ -128,6 +128,10 @@ var app = function () {
 
         self.get_all_stories(); //update the stories list
 
+        //add it to the heatmap info
+        console.log(data.story.latitude + "  " + data.story.longitude)
+        var google_lat_lng = new google.maps.LatLng(data.story.latitude, data.story.longitude);
+        heatmap_data_points.push(google_lat_lng) //defined in maps
       }
     )
   }
@@ -179,6 +183,8 @@ var app = function () {
           })
         }
       })
+
+    self.update_heatmap();
   }
 
   //search
@@ -214,6 +220,34 @@ var app = function () {
     console.log(self.vue.expandstory);
   };
 
+
+  //heatmap
+
+  self.update_heatmap = function () {
+    $.getJSON(get_heatmap_data_URL,
+      function (data) {
+        //NOTE:
+        //data.heatmap_locations is dicts of lat/long 
+        //  data.heatmap_locations = [{lat=,long=},{lat=,long=}...]
+
+        heatmap_data_points.clear();
+        //heatmap_data_points is defined at top of maps.js 
+
+        for (var i = 0; i < data.heatmap_locations.length; i++) {
+          pos = data.heatmap_locations[i];
+          google_lat_lng = new google.maps.LatLng(pos.lat, pos.long);
+
+          heatmap_data_points.push(google_lat_lng);
+        }
+      }
+
+    )
+  }
+
+  self.toggle_heatmap = function () {
+    heatmap.setMap(heatmap.getMap() ? null : map);
+  }
+
   // Complete as needed.
   self.vue = new Vue({
     el: "#vue-div",
@@ -240,6 +274,7 @@ var app = function () {
       marker_dict: {},
       expandvar: false,
       expandstory: null,
+      heatmap_set: false
     },
     methods: {
       add_story: self.add_story,
@@ -259,6 +294,8 @@ var app = function () {
       expandins: self.expandins,
       closeins: self.closeins,
       place_all_markers: self.place_all_markers,
+      toggle_heatmap: self.toggle_heatmap,
+      update_heatmap: self.update_heatmap
     }
 
   });
