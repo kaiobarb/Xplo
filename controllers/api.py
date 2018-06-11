@@ -39,7 +39,7 @@ def delete_story():
 def get_all_stories():
     stories = []
 
-    rows = db().select(db.user_stories.ALL)
+    rows = db().select(db.user_stories.ALL, orderby=~db.user_stories.created_on)
 
     for r in rows:
         stories.append(r)

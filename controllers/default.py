@@ -17,6 +17,7 @@ def index():
     if you need a simple wiki simply replace the two lines below with:
     return auth.wiki()
     """
+    #db(db.user_stories).delete()
     logger.info('The session is: %r' % session)
     stories = None
     if auth.user is not None:

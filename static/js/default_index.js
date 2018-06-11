@@ -8,13 +8,14 @@ var app = function () {
 
   self.login_redirect = function () {
     self.logged_in = true;
+    sessionStorage.setItem("logged_in", self.logged_in.toString())
     window.location = "/Xplo/default/user/login";
   }
 
   self.logout_redirect = function () {
     self.logged_in = false;
+    sessionStorage.setItem("logged_in", self.logged_in.toString())
     window.location = "/Xplo/default/user/logout";
-
   }
 
   // Extends an array
@@ -23,6 +24,7 @@ var app = function () {
       a.push(b[i]);
     }
   };
+
 
   // args: a location consisting of a latitude and longitude
   // returns: a marker object
@@ -39,19 +41,23 @@ var app = function () {
     return marker
   }
 
+
   self.confirm_button = function (confirmed) {
     self.vue.confirming = false;
 
     if (confirmed) {
       if (placed_marker != null) {
         self.vue.entering_text = true;
-        //adds story in self.add_story after getting the input info in enter_text_button
+        placed_marker.setAnimation(null);
+        //adds story in self.add_story after getting the input info in
+        // enter_text_button
       } else {
         console.error("confirm_button error. placed_marker is null");
       }
     } else {
       if (placed_marker != null) {
         placed_marker.setMap(null);
+        self.vue.entering_text = false;
       } else {
         console.error("confirm_button error. placed_marker is null");
 
@@ -64,8 +70,10 @@ var app = function () {
     if (self.is_adding) {
       listener = map.addListener('click', function (event) {
         placed_marker = self.placeMarker(event.latLng);
+        placed_marker.setAnimation(google.maps.Animation.BOUNCE);
         google.maps.event.removeListener(listener);
         self.is_adding = !self.is_adding;
+
 
 
         //confirm if you want to put it in this location
@@ -77,7 +85,6 @@ var app = function () {
 
 
   self.delete_story_button = function (marker) {
-    console.log("made it");
     //map.addListener(marker, 'click', function (point) { id = this.__gm_id; self.delMarker(id)});
     marker.setMap(null);
     $.post(delete_url,
@@ -90,11 +97,9 @@ var app = function () {
       }
     )
     self.vue.deletevar = !self.vue.deletevar;
-    console.log(self.vue.deletevar);
   };
 
   self.enter_text_button = function () {
-    console.log("sharing story with world")
     self.vue.entering_text = false;
     self.add_story(placed_marker, self.vue.title_text, self.vue.body_text);
 
@@ -131,7 +136,6 @@ var app = function () {
   self.marker_clicked = function (mark) {
     if (self.vue.deletevar) {
       self.delete_story_button(mark);
-      console.log("delete called");
     }
   }
 
@@ -164,6 +168,7 @@ var app = function () {
           var latlong = new google.maps.LatLng(lat, long);
 
           marker = self.placeMarker(latlong);
+          marker.setAnimation(google.maps.Animation.DROP);
 
           //add the marker object to the dict
           var id_as_string = String(story.id)
@@ -172,18 +177,12 @@ var app = function () {
           marker.addListener('click', function () {
             self.marker_clicked(this)
           })
-          // marker.addListener('click', function () {
-          //   console.log("clicked: ", marker.getPosition().)
-          //   self.marker_clicked(marker)
-          // })
         }
       })
   }
 
   //search
   self.search_button = function () {
-    console.log("serach button")
-
     if (self.vue.search_phrase != null) {
       self.search()
     }
@@ -195,7 +194,6 @@ var app = function () {
         search_phrase: self.vue.search_phrase
       },
       function (data) {
-        console.log(data)
         self.vue.search_results = data.results;
         self.vue.search_phrase = null;
       }
@@ -216,7 +214,7 @@ var app = function () {
       is_adding: false,
       locations: [],
       stories: [],
-      logged_in: false,
+      logged_in: (sessionStorage.getItem("logged_in") == "true"),
       confirming: false,
       id: 0,
       deletevar: false,
@@ -226,12 +224,12 @@ var app = function () {
       search_results: [],
       search_phrase: null,
       marker_dict: {},
-
     },
     methods: {
       add_story: self.add_story,
       add_story_button: self.add_story_button,
       login_redirect: self.login_redirect,
+      logout_redirect: self.logout_redirect,
       confirm_button: self.confirm_button,
       confirm_location: self.confirm_location,
       delMarker: self.delMarker,
