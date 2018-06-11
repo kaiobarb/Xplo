@@ -53,9 +53,7 @@
           <div class="mdl-card__supporting-text">
             This text might describe the photo and provide further information, such as where and when it was taken.
           </div>
-          <div class="mdl-card__actions">
-            <a href="(URL or function)">Related Action</a>
-          </div>
+          
         </div>
       </nav>
     </div>
@@ -128,11 +126,9 @@
               </div>
               <div class="mdl-card__supporting-text">
                 <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
-                ${story.body} User ID: ${story.created_by}
+                User ID: ${story.created_by} ${story.body}
               </div>
-              <div class="mdl-card__actions">
-                <a href="(URL or function)">Related Action</a>
-              </div>
+
             </div>
           </div>
         </div>
@@ -149,7 +145,7 @@
               </div>
               <div class="mdl-card__supporting-text">
                 <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
-                ${story.body} User ID: ${story.created_by}
+                User ID: ${story.created_by} ${story.body}
               </div>
               <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story)">
                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
@@ -160,7 +156,7 @@
           </div>
         </div>
 
-        <div id="card-container" style="right:500px" v-if="expandvar">
+        <div id="card-container" style="right:50%;" v-if="expandvar">
 
 
             <div class="mdl-card mdl-shadow--4dp">
@@ -170,9 +166,9 @@
               <div class="mdl-card__media">
                 <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
               </div>
-              <div class="mdl-card__supporting-text" style="height:400px">
+              <div class="mdl-card__supporting-text" style="height:100%">
 
-                ${expandstory.body} User ID: ${expandstory.created_by}
+                User ID: ${story.created_by} ${expandstory.body}
               </div>
               <div class="mdl-card__actions mdl-card--border" v-on:click="closeins">
                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
