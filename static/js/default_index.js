@@ -200,6 +200,20 @@ var app = function () {
     )
   }
 
+  self.expandins = function (store) {
+    self.vue.expandvar = !self.vue.expandvar;
+    self.vue.expandstory = store;
+    console.log(self.vue.expandvar);
+    console.log(self.vue.expandstory.created_by);
+  };
+
+  self.closeins = function () {
+    self.vue.expandvar = !self.vue.expandvar;
+    self.vue.expandstory = null;
+    console.log(self.vue.expandvar);
+    console.log(self.vue.expandstory);
+  };
+
   // Complete as needed.
   self.vue = new Vue({
     el: "#vue-div",
@@ -224,6 +238,8 @@ var app = function () {
       search_results: [],
       search_phrase: null,
       marker_dict: {},
+      expandvar: false,
+      expandstory: null,
     },
     methods: {
       add_story: self.add_story,
@@ -240,6 +256,8 @@ var app = function () {
       get_all_stories: self.get_all_stories,
       search: self.search,
       search_button: self.search_button,
+      expandins: self.expandins,
+      closeins: self.closeins,
       place_all_markers: self.place_all_markers,
     }
 
