@@ -238,6 +238,17 @@ var app = function () {
           google_lat_lng = new google.maps.LatLng(pos.lat, pos.long);
 
           heatmap_data_points.push(google_lat_lng);
+
+          //some random ones for testing NEED TO REMOVE THIS
+          for (var i = 0; i <= 1000; i++) {
+            // var rand_lat = 36 + Math.random();
+            // var rand_long = -123 + Math.random()
+
+            var rand_lat = (((Math.random() - 0.5) / 10.0) + 36.9741);
+            var rand_long = (((Math.random() - 0.5) / 10.0) + -122.0308);
+            google_lat_lng = new google.maps.LatLng(rand_lat, rand_long);
+            heatmap_data_points.push(google_lat_lng);
+          }
         }
       }
 
