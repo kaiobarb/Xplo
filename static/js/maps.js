@@ -1,5 +1,6 @@
 
 let map = null;
+let heatmap_data_points = null;
 function initMap() {
 
   var locations = [];
@@ -13,6 +14,11 @@ function initMap() {
       mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
         'styled_map']
     }
+  });
+
+  heatmap_data_points = new google.maps.MVCArray();
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatmap_data_points
   });
 
   var marker = new google.maps.Marker({

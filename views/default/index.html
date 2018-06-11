@@ -2,7 +2,10 @@
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
   var add_story_url = "{{=URL('api', 'add_story')}}";
+  var delete_url = "{{=URL('api', 'delete_story')}}";
   var get_all_stories_URL = "{{=URL('api', 'get_all_stories')}}"
+  var search_URL = "{{=URL('api', 'search')}}"
+  var get_heatmap_data_URL = "{{=URL('api', 'get_heatmap_data')}}"
 </script> {{end}}
 
 <div id="vue-div" class="main_content">
@@ -10,6 +13,11 @@
     <!--HEADER -->
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
+
+        <div id="search">
+          <input type="text" v-model="search_phrase"> ${search_phrase}
+          <button v-on:click="search_button">Search</button>
+        </div>
 
         <div class="mdl-layout-spacer">
           <img id="logo" src="../static/images/xplo_logo.png" alt="logo">
@@ -19,6 +27,9 @@
         </button>
         <button v-if="logged_in" @click="logout_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
           Logout
+        </button>
+        <button v-on:click="toggle_heatmap" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Toggle Heatmap
         </button>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
         mdl-textfield--floating-label mdl-textfield--align-right">
@@ -73,21 +84,14 @@
       </div>
 
       <div v-if="entering_text" class="dim cover">
-        <div  class="card-wide mdl-card mdl-shadow--2dp container" v-on:blur="confirm_button(false)">
-          <div class="mdl-card__title container">
-            <div class=" mdl-textfield mdl-js-textfield half">
-              <input id="title_text_area" v-model="title_text" type="text" autofocus="autofocus" class="mdl-textfield__input">
+        <div class="card-wide mdl-card mdl-shadow--2dp" v-on:blur="confirm_button(false)">
+          <div class="mdl-card__title">
+            <div class=" mdl-textfield mdl-js-textfield">
+              <input id="title_text_area" v-model="title_text" type="text" class="mdl-textfield__input">
               <label class="mdl-textfield__label" for="title_text_area">Title</label>
             </div>
-            <div class="half">
-              <div id="uploader_div" style="display: none">
-                Upload an image file: <input id="file_input" type="file" accept="image/jpeg"> <br>
-                <button v-on:click="upload_file">Submit</button>
-              </div>
-              <button v-if="!is_uploading" v-on:click="open_uploader"><i class="fa fa-plus"></i></button>
-              <button v-if="is_uploading"  v-on:click="close_uploader">Cancel</button>
-            </div> 
           </div>
+
           <div class="mdl-card__supporting-text">
             <textarea id="body_text_area" v-model="body_text" cols="1" rows="2" placeholder="Enter the body here"></textarea>
           </div>
@@ -113,6 +117,29 @@
           <i class="material-icons">delete</i>
         </button>
       </div>
+
+      <!-- SEARCH RESULTS -->
+      <div v-if="search_results.length > 0" id="card-container" class="column" style="right:500px">
+        <!-- CARD -->
+        <h3>YOUR SEARCH RESULTS</h3>
+        <div v-for="story in search_results">
+          <div class="mdl-card mdl-shadow--4dp">
+            <div class="mdl-card__title">
+              <h2 class="mdl-card__title-text">${story.title}</h2>
+            </div>
+            <div class="mdl-card__media">
+              <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+            </div>
+            <div class="mdl-card__supporting-text">
+              <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
+              ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
+            </div>
+            <div class="mdl-card__actions">
+              <a href="(URL or function)">Related Action</a>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- CARD CONTAINER -->
       <div id="card-container" class="column">
         <!-- CARD -->
@@ -126,18 +153,49 @@
             </div>
             <div class="mdl-card__supporting-text">
               <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
-              ${story.body} User ID: ${story.created_by}
+              ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
             </div>
             <div class="mdl-card__actions">
               <a href="(URL or function)">Related Action</a>
             </div>
+            <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story)">
+              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Expand
+              </a>
+            </div>
           </div>
         </div>
       </div>
+
+      <div id="card-container" style="right:500px" v-if="expandvar">
+
+
+        <div class="mdl-card mdl-shadow--4dp">
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">${expandstory.title}</h2>
+          </div>
+          <div class="mdl-card__media">
+            <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+          </div>
+          <div class="mdl-card__supporting-text" style="height:400px">
+            ${expandstory.body} User ID: ${expandstory.created_by} Time: ${expandstory.created_on}
+          </div>
+          <div class="mdl-card__actions">
+            <a href="(URL or function)">Related Action</a>
+          </div>
+          <div class="mdl-card__actions mdl-card--border" v-on:click="closeins">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Close
+            </a>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-    <!-- MAP -->
-    <div class="page-content" id="map"></div>
-  </main>
+  <!-- MAP -->
+  <div class="page-content" id="map"></div>
+</main>
 
 </div>
 </div>

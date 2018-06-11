@@ -12,9 +12,17 @@ def add_story():
             title=request.vars.title,
             body=request.vars.body,
         )
+
+        heat_id = db.user_stories_heatmap.insert(
+            latitude=request.vars.lat,
+            longitude=request.vars.lng,
+            title=request.vars.title,
+            body=request.vars.body,
+        )
     pass
     # rows = db(db.user_stories.location != None).select()
     return response.json(dict(story=dict(
+        id=t_id,
         latitude=request.vars.lat,
         longitude=request.vars.lng,
         created_by=auth.user_id,
@@ -23,14 +31,52 @@ def add_story():
     )))
 
 
+def delete_story():
+    db((db.user_stories.latitude == request.vars.lat) & (db.user_stories.longitude == request.vars.lng)).delete()
+    return "ok"
+
+
 def get_all_stories():
     stories = []
 
-    rows = db().select(db.user_stories.ALL)
+    rows = db().select(db.user_stories.ALL, orderby=~db.user_stories.created_on)
 
     for r in rows:
         stories.append(r)
 
     return response.json(dict(
         stories=stories
+    ))
+
+
+def search():
+    phrase = str(request.vars.search_phrase)
+    print "search for: ", phrase
+
+    results = []
+
+    rows = db((db.user_stories.title.contains(phrase)) | (db.user_stories.body.contains(phrase))).select()
+
+    for r in rows:
+        results.append(r)
+
+    return response.json(dict(
+        results=results
+    ))
+
+
+def get_heatmap_data():
+    heatmap_locations = []
+
+    rows = db().select(db.user_stories_heatmap.ALL)
+
+    for r in rows:
+        pos = dict(
+            lat=r.latitude,
+            long=r.longitude
+        )
+        heatmap_locations.append(pos)
+
+    return response.json(dict(
+        heatmap_locations=heatmap_locations
     ))
