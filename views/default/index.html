@@ -22,65 +22,72 @@
         </button>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
         mdl-textfield--floating-label mdl-textfield--align-right">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
+        <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- DRAWER -->
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Stories</span>
+    <nav class="mdl-navigation">
+      <!-- CARD -->
+      <div class="mdl-card mdl-shadow--4dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">title Text Goes Here</h2>
+        </div>
+        <div class="mdl-card__media">
+          <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+        </div>
+        <div class="mdl-card__supporting-text">
+          This text might describe the photo and provide further information, such as where and when it was taken.
+        </div>
+        <div class="mdl-card__actions">
+          <a href="(URL or function)">Related Action</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <main class="mdl-layout__content" id="wrapper">
+    <div id="map-overlay" class="cover">
+      <!-- CONFIRM DIV -->
+      <div id="confirm-location-container" v-if="confirming" class="absolute">
+        <div class="mdl-card mdl-shadow--4dp" class="bottom-popup">
+          <div class="mdl-card__supporting-text">
+            Do you want to place a marker at this location?
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <a v-on:click="confirm_button(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              Yes
+            </a>
+            <a v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              No
+            </a>
           </div>
         </div>
       </div>
-    </header>
-    <!-- DRAWER -->
-    <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Stories</span>
-      <nav class="mdl-navigation">
-        <!-- CARD -->
-        <div class="mdl-card mdl-shadow--4dp">
-          <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">title Text Goes Here</h2>
-          </div>
-          <div class="mdl-card__media">
-            <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
-          </div>
-          <div class="mdl-card__supporting-text">
-            This text might describe the photo and provide further information, such as where and when it was taken.
-          </div>
-          <div class="mdl-card__actions">
-            <a href="(URL or function)">Related Action</a>
-          </div>
-        </div>
-      </nav>
-    </div>
 
-    <main class="mdl-layout__content" id="wrapper">
-      <div id="map-overlay" class="cover">
-        <!-- CONFIRM DIV -->
-        <div id="confirm-location-container" v-if="confirming" class="absolute">
-          <div class="mdl-card mdl-shadow--4dp" class="bottom-popup">
-            <div class="mdl-card__supporting-text">
-              Do you want to place a marker at this location?
+      <div v-if="entering_text" class="dim cover">
+        <div  class="card-wide mdl-card mdl-shadow--2dp container" v-on:blur="confirm_button(false)">
+          <div class="mdl-card__title container">
+            <div class=" mdl-textfield mdl-js-textfield half">
+              <input id="title_text_area" v-model="title_text" type="text" autofocus="autofocus" class="mdl-textfield__input">
+              <label class="mdl-textfield__label" for="title_text_area">Title</label>
             </div>
-            <div class="mdl-card__actions mdl-card--border">
-              <a v-on:click="confirm_button(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                Yes
-              </a>
-              <a v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                No
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="entering_text" class="dim cover">
-          <div  class="card-wide mdl-card mdl-shadow--2dp" v-on:blur="confirm_button(false)">
-          <div class="mdl-card__title">
-              <div class=" mdl-textfield mdl-js-textfield">
-                <input id="title_text_area" v-model="title_text" type="text" class="mdl-textfield__input">
-                <label class="mdl-textfield__label" for="title_text_area">Title</label>
+            <div class="half">
+              <div id="uploader_div" style="display: none">
+                Upload an image file: <input id="file_input" type="file" accept="image/jpeg"> <br>
+                <button v-on:click="upload_file">Submit</button>
               </div>
+              <button v-if="!is_uploading" v-on:click="open_uploader"><i class="fa fa-plus"></i></button>
+              <button v-if="is_uploading"  v-on:click="close_uploader">Cancel</button>
+            </div> 
           </div>
-          
           <div class="mdl-card__supporting-text">
             <textarea id="body_text_area" v-model="body_text" cols="1" rows="2" placeholder="Enter the body here"></textarea>
           </div>
@@ -93,46 +100,46 @@
             </button>
           </div>
         </div>
-        </div>
-        
+      </div>
 
-        <!-- BUTTON -->
-        <!-- Colored FAB button -->
-        <div v-show="logged_in" id="button-bar">
-          <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-            <i class="material-icons">add</i>
-          </button>
-          <button v-on:click="deleteins" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-            <i class="material-icons">delete</i>
-          </button>
-        </div>
-        <!-- CARD CONTAINER -->
-        <div id="card-container" class="column">
-          <!-- CARD -->
-          <div v-for="story in stories">
-            <div class="mdl-card mdl-shadow--4dp">
-              <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">${story.title}</h2>
-              </div>
-              <div class="mdl-card__media">
-                <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
-              </div>
-              <div class="mdl-card__supporting-text">
-                <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
-                ${story.body} User ID: ${story.created_by}
-              </div>
-              <div class="mdl-card__actions">
-                <a href="(URL or function)">Related Action</a>
-              </div>
+
+      <!-- BUTTON -->
+      <!-- Colored FAB button -->
+      <div v-show="logged_in" id="button-bar">
+        <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+          <i class="material-icons">add</i>
+        </button>
+        <button v-on:click="deleteins" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+      <!-- CARD CONTAINER -->
+      <div id="card-container" class="column">
+        <!-- CARD -->
+        <div v-for="story in stories">
+          <div class="mdl-card mdl-shadow--4dp">
+            <div class="mdl-card__title">
+              <h2 class="mdl-card__title-text">${story.title}</h2>
+            </div>
+            <div class="mdl-card__media">
+              <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+            </div>
+            <div class="mdl-card__supporting-text">
+              <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
+              ${story.body} User ID: ${story.created_by}
+            </div>
+            <div class="mdl-card__actions">
+              <a href="(URL or function)">Related Action</a>
             </div>
           </div>
         </div>
       </div>
-      <!-- MAP -->
-      <div class="page-content" id="map"></div>
-    </main>
+    </div>
+    <!-- MAP -->
+    <div class="page-content" id="map"></div>
+  </main>
 
-  </div>
+</div>
 </div>
 
 <script src="{{=URL('static', 'js/default_index.js')}}"></script>

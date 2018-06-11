@@ -26,6 +26,18 @@ var app = function () {
         }
     };
 
+    self.close_uploader = function () {
+        $("div#uploader_div").hide();
+        self.vue.is_uploading = false;
+        $("input#file_input").val(""); // This clears the file choice once uploaded.
+    };
+
+    self.open_uploader = function () {
+        $("div#uploader_div").show();
+        self.vue.is_uploading = true;
+    };
+
+
     // args: a location consisting of a latitude and longitude
     // returns: a marker object
     self.add_story_button = function () {
@@ -157,6 +169,47 @@ var app = function () {
         )
     }
 
+    self.upload_file = function (event) {
+        // Reads the file.
+        var input = $("input#file_input")[0];
+        console.log(event);
+        var file = input.files[0];
+        if (file) {
+            // First, gets an upload URL.
+            console.log("Trying to get the upload url");
+            $.getJSON('https://upload-dot-luca-teaching.appspot.com/start/uploader/get_upload_url',
+                function (data) {
+                    // We now have upload (and download) URLs.
+                    var put_url = data['signed_url'];
+                    var get_url = data['access_url'];
+                    console.log("Received upload url: " + put_url);
+                    // Uploads the file, using the low-level interface.
+                    var req = new XMLHttpRequest();
+                    req.addEventListener("load", self.upload_complete(get_url));
+                    // TODO: if you like, add a listener for "error" to detect failure.
+                    req.open("PUT", put_url, true);
+                    req.send(file);
+                });
+        }
+    };
+
+
+    self.upload_complete = function(get_url) {
+        // Hides the uploader div.
+        self.close_uploader();
+        console.log('The file was uploaded; it is now available at ' + get_url);
+        // $.post(add_image_url, { 
+        //     image_url: get_url,
+        //     image_price: self.vue.form_price,
+        //     },
+        //     function(data) {
+        //         self.vue.user_images.unshift(data);
+        //         self.vue.form_price = 0.00;
+        //     }
+        // )
+        // setTimeout(self.get_user_images, 750, users[0].id);
+    };
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -180,6 +233,7 @@ var app = function () {
             entering_text: false,
             title_text: null,
             body_text: null,
+            is_uploading: false,
         },
         methods: {
             add_story: self.add_story,
@@ -194,6 +248,10 @@ var app = function () {
             deleteins: self.deleteins,
             enter_text_button: self.enter_text_button,
             get_all_stories: self.get_all_stories,
+            upload_file: self.upload_file,
+            upload_complete: self.upload_complete,
+            open_uploader: self.open_uploader,
+            close_uploader: self.close_uploader,
         }
 
     });
