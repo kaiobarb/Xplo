@@ -87,7 +87,7 @@
                 <label class="mdl-textfield__label" for="title_text_area">Title</label>
               </div>
           </div>
-          
+
           <div class="mdl-card__supporting-text">
             <textarea id="body_text_area" v-model="body_text" cols="1" rows="2" placeholder="Enter the body here"></textarea>
           </div>
@@ -101,7 +101,7 @@
           </div>
         </div>
         </div>
-        
+
 
         <!-- BUTTON -->
         <!-- Colored FAB button -->
@@ -151,9 +151,6 @@
                 <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
                 ${story.body} User ID: ${story.created_by}
               </div>
-              <div class="mdl-card__actions">
-                <a href="(URL or function)">Related Action</a>
-              </div>
               <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story)">
                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
                   Expand
@@ -176,9 +173,6 @@
               <div class="mdl-card__supporting-text" style="height:400px">
 
                 ${expandstory.body} User ID: ${expandstory.created_by}
-              </div>
-              <div class="mdl-card__actions">
-                <a href="(URL or function)">Related Action</a>
               </div>
               <div class="mdl-card__actions mdl-card--border" v-on:click="closeins">
                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >
