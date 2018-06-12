@@ -107,3 +107,19 @@ left: 0;
 right: 0;
 bottom: 0;
 }
+
+.no-scrollbar {
+  overflow: hidden;
+}
+
+#expanded-card-container {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+}
+
+#expanded-card {
+  width: 50%;
+  margin-right: auto;
+  margin-left: auto;
+}

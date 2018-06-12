@@ -120,7 +120,7 @@
       </div>
 
       <!-- SEARCH RESULTS -->
-      <div v-if="search_results.length > 0" id="card-container" class="column" style="right:500px">
+      <div v-if="search_results.length > 0" id="card-container" style="right:500px">
         <!-- CARD -->
         <h3>YOUR SEARCH RESULTS</h3>
         <div v-for="story in search_results">
@@ -143,7 +143,7 @@
       </div>
       <!-- CARD CONTAINER -->
       <div id="card-container" class="column">
-        <!-- EXPANDED CARD -->
+        <!-- CARD -->
         <div v-for="story in stories">
           <div class="mdl-card mdl-shadow--4dp">
             <div class="mdl-card__title">
@@ -168,10 +168,9 @@
         </div>
       </div>
 
-      <div id="card-container" style="right:500px" v-if="expandvar">
-
-
-        <div class="mdl-card mdl-shadow--4dp">
+      <!-- EXPANDED CARD -->
+      <div id="expanded-card-container" class="no-scrollbar" v-if="expandvar">
+        <div id="expanded-card" class="mdl-card mdl-shadow--4dp">
           <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">${expandstory.title}</h2>
           </div>
@@ -190,7 +189,6 @@
             </a>
           </div>
         </div>
-
       </div>
 
     </div>
