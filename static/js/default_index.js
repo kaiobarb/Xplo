@@ -190,6 +190,12 @@ var app = function () {
       function (data) {
         self.vue.stories = data.stories; //sets the vue variable to the list of variables
         enumerate(self.vue.stories);
+
+        for (var i = 0; i < data.stories; i++) {
+          story = data.stories[i]
+          id_as_string = String(story.id)
+          self.vue.like_dict[id_as_string] = JSON.parse(story.likes)
+        }
       }
     )
   }
@@ -426,6 +432,7 @@ var app = function () {
   //liking
   self.liked = function (post_id, user_id) {
     console.log(user_id)
+    self.vue.my_likes.push(post_id)
 
     $.post(liked_URL,
       {
@@ -443,6 +450,7 @@ var app = function () {
           }, function (data) {
             id_as_string = String(post_id)
             self.vue.like_dict[id_as_string] = list
+            self.get_all_stories()
           }
 
         )
@@ -490,6 +498,7 @@ var app = function () {
       commenting_post_id: null,
       comment_dict: {},
       like_dict: {},
+      my_likes: [],
 
     },
     methods: {

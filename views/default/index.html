@@ -139,6 +139,20 @@
                 <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
                 Posted by: ${story.user_first_name} ${story.user_last_name}
                 <br> Posted on: ${story.created_on}
+                <div class="container">
+                  <div class="threequarters">
+                    Likes: ${story.num_likes}
+                  </div>
+                  <div class="quarter">
+                    <i class="fa fa-heart-o" v-if="!(my_likes.includes(story.id))" v-on:click="liked(story.id, {{=auth.user_id}})"></i>
+
+                    <i class="fa fa-heart" style="color: red" v-if="my_likes.includes(story.id)"></i>
+                    <!-- <i class="fa fa-heart-o" v-if="!(like_dict[story.id].includes({{=auth.user_id}}))" v-on:click="liked(story.id, {{=auth.user_id}})"></i>
+
+                    <i class="fa fa-heart" v-if="like_dict[story.id].includes({{=auth.user_id}})"></i> -->
+                  </div>
+                </div>
+
                 <hr> ${story.body}
               </div>
               <div class="mdl-card__actions mdl-card--border">

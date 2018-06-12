@@ -115,3 +115,22 @@ def get_comments():
     return response.json(dict(
         comments=comments
     ))
+
+
+def liked():
+    row = db(db.user_stories.id == request.vars.post_id).select().first().likes
+    # liked_list = row.likes
+
+    return response.json(dict(
+        liked_list=row.likes
+    ))
+
+
+def liked_update():
+    row = db(db.user_stories.id == request.vars.post_id).select().first()
+    num_likes = row.num_likes
+
+    row.update_record(likes=request.vars.new_list)
+    row.update_record(num_likes=(num_likes + 1))
+
+    return "ok"
