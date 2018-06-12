@@ -159,7 +159,7 @@
         <div id="card-container" class="column">
           <!-- CARD -->
           <div v-for="story in stories">
-            <div class="mdl-card mdl-shadow--4dp grow">
+            <div class="mdl-card mdl-shadow--4dp grow" style="max-height: 385px;">
               <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">${story.title}</h2>
               </div>
@@ -175,15 +175,10 @@
                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                 Expand
                 </a>
-              </div>
-              <div v-if="story.created_by == '{{=auth.user_id}}'">
-                <div class="mdl-card__actions mdl-card--border" v-on:click="delete_story_button(story.id)">
-                  <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-if="story.created_by == '{{=auth.user_id}}'" v-on:click="delete_story_button(story.id)">
                   Delete
                   </a>
-                </div>
               </div>
-
             </div>
           </div>
         </div>
