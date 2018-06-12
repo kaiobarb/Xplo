@@ -123,3 +123,6 @@ bottom: 0;
   margin-right: auto;
   margin-left: auto;
 }
+
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(1.06); z-index: 1 }
