@@ -12,13 +12,18 @@ div.main_content {
   background-color: 0,0,255 !important;
 }
 
-.mdl-textfield {
+/*.mdl-textfield {
   display: inline-flex;
-}
+}*/
 
 .mdl-layout__drawer {
   /*display: flex;
   align-items: center;*/
+}
+
+.search-bar {
+  display: inline-block;
+  width: 20%;
 }
 
 .color-drop { background-color: #009688; }
@@ -126,3 +131,5 @@ bottom: 0;
 
 .grow { transition: all .2s ease-in-out; }
 .grow:hover { transform: scale(1.06); z-index: 1 }
+
+

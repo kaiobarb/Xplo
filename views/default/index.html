@@ -13,31 +13,33 @@
     <!--HEADER -->
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <!-- SEARCH -->
-        <div id="search">
-          <input type="text" v-model="search_phrase">
-          <button v-if="search_results.length <= 0" v-on:click="search_button">Search</button>
-          <button v-if="search_results.length > 0" v-on:click="search_button">Cancel Search</button>
-        </div>
-
         <div class="mdl-layout-spacer">
-          <img id="logo" src="../static/images/xplo_logo.png" alt="logo">
-        </div>
-        <button v-if="!logged_in" @click="login_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Login
-        </button>
-        <button v-if="logged_in" @click="logout_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Logout
-        </button>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-        mdl-textfield--floating-label mdl-textfield--align-right">
-        <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-          <i class="material-icons">search</i>
-        </label>
-        <div class="mdl-textfield__expandable-holder">
-          <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
+        
+      </div>
+      <img id="logo" src="../static/images/xplo_logo.png" alt="logo">
+        <div class="search-bar">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+          mdl-textfield--floating-label mdl-textfield--align-right search-bar">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <!-- SEARCH -->
+            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" v-model="search_phrase" style="color: black">
+            <button v-if="search_results.length <= 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" style="float: right">Search</button>
+            <button v-if="search_results.length > 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Cancel Search</button>
+          </div>
         </div>
       </div>
+
+      
+      <button v-if="!logged_in" @click="login_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+        Login
+      </button>
+      <button v-if="logged_in" @click="logout_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+        Logout
+      </button>
+
     </div>
   </header>
   <!-- DRAWER -->
@@ -45,8 +47,8 @@
     <span class="mdl-layout-title">Options</span>
     <nav class="mdl-navigation">
       <button v-on:click="toggle_heatmap" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Toggle Heatmap
-        </button>
+        Toggle Heatmap
+      </button>
     </nav>
   </div>
 
@@ -105,7 +107,7 @@
       </div>
 
       <!-- SEARCH RESULTS -->
-      <div v-if="search_results.length > 0" id="card-container" style="right:500px">
+      <div v-if="search_results.length > 0" id="card-container" style="right:500px" class="no-scrollbar">
         <!-- CARD -->
         <h3>YOUR SEARCH RESULTS</h3>
         <div v-for="story in search_results">
@@ -177,9 +179,9 @@
       </div>
 
     </div>
-  <!-- MAP -->
-  <div class="page-content" id="map"></div>
-</main>
+    <!-- MAP -->
+    <div class="page-content" id="map"></div>
+  </main>
 
 </div>
 </div>
