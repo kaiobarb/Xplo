@@ -27,11 +27,9 @@
           </label>
           <div class="mdl-textfield__expandable-holder">
             <!-- SEARCH -->
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" v-model="search_phrase" style="color: black">
+            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" v-model="search_phrase" style="color: black" v-on:keypress="search_button">
             
           </div>
-          <button v-if="search_results.length <= 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-            style="float: right">Search</button>
             <button v-if="search_results.length > 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Cancel Search</button>
         </div>
       </div>

@@ -10,20 +10,20 @@ var app = function () {
     self.logged_in = true;
     sessionStorage.setItem("logged_in", self.logged_in.toString())
     window.location = "/Xplo/default/user/login";
-  }
+}
 
-  self.logout_redirect = function () {
+self.logout_redirect = function () {
     self.logged_in = false;
     sessionStorage.setItem("logged_in", self.logged_in.toString())
     window.location = "/Xplo/default/user/logout";
-  }
+}
 
   // Extends an array
   self.extend = function (a, b) {
     for (var i = 0; i < b.length; i++) {
       a.push(b[i]);
-    }
-  };
+  }
+};
 
   // Enumerates an array.
   var enumerate = function (v) { var k = 0; return v.map(function (e) { e._idx = k++; }); };
@@ -32,12 +32,12 @@ var app = function () {
     $("div#uploader_div").hide();
     self.vue.is_uploading = false;
     $("input#file_input").val(""); // This clears the file choice once uploaded.
-  };
+};
 
-  self.open_uploader = function () {
+self.open_uploader = function () {
     $("div#uploader_div").show();
     self.vue.is_uploading = true;
-  };
+};
 
 
   // args: a location consisting of a latitude and longitude
@@ -46,18 +46,18 @@ var app = function () {
     self.is_adding = !self.is_adding;
     self.deletevar = false;
     self.confirm_location();
-  }
+}
 
-  self.placeMarker = function placeMarker(location) {
+self.placeMarker = function placeMarker(location) {
     var marker = new google.maps.Marker({
       position: location,
       map: map,
-    });
+  });
     return marker
-  };
+};
 
 
-  self.confirm_button = function (confirmed) {
+self.confirm_button = function (confirmed) {
     self.vue.confirming = false;
 
     if (confirmed) {
@@ -66,22 +66,22 @@ var app = function () {
         placed_marker.setAnimation(null);
         //adds story in self.add_story after getting the input info in
         // enter_text_button
-      } else {
-        console.error("confirm_button error. placed_marker is null");
-      }
     } else {
-      if (placed_marker != null) {
-        placed_marker.setMap(null);
-        self.vue.entering_text = false;
-      } else {
         console.error("confirm_button error. placed_marker is null");
-
-      }
     }
-  }
+} else {
+  if (placed_marker != null) {
+    placed_marker.setMap(null);
+    self.vue.entering_text = false;
+} else {
+    console.error("confirm_button error. placed_marker is null");
 
-  var placed_marker = null;
-  self.confirm_location = function () {
+}
+}
+}
+
+var placed_marker = null;
+self.confirm_location = function () {
     if (self.is_adding) {
       listener = map.addListener('click', function (event) {
         placed_marker = self.placeMarker(event.latLng);
@@ -94,12 +94,12 @@ var app = function () {
         //confirm if you want to put it in this location
         self.vue.confirming = true;
 
-      });
-    }
-  };
+    });
+  }
+};
 
 
-  self.delete_story_button = function (id) {
+self.delete_story_button = function (id) {
     //map.addListener(marker, 'click', function (point) { id = this.__gm_id; self.delMarker(id)});
     self.vue.deletevar = !self.vue.deletevar;
     self.vue.is_adding = false;
@@ -108,18 +108,18 @@ var app = function () {
     var marker = self.vue.marker_dict[id_as_string];
     marker.setMap(null);
     $.post(delete_url,
-      {
+    {
         lat: marker.position.lat,
         lng: marker.position.lng,
-      },
-      function (data) {
+    },
+    function (data) {
         self.get_all_stories(); //update list
-      }
+    }
     )
     self.vue.deletevar = !self.vue.deletevar;
-  };
+};
 
-  self.enter_text_button = function () {
+self.enter_text_button = function () {
     self.vue.entering_text = false;
     self.add_story(placed_marker, self.vue.title_text, self.vue.body_text, self.vue.image_url);
 
@@ -127,26 +127,26 @@ var app = function () {
     self.vue.title_text = null;
     self.vue.body_text = null;
     placed_marker = null;
-  }
+}
 
-  self.add_story = function (marker, title, body, url) {
+self.add_story = function (marker, title, body, url) {
 
     setTimeout(function () {
 
 
       marker.addListener('click', function () {
         self.marker_clicked(this)
-      })
+    })
 
       $.post(add_story_url,
-        {
+      {
           lat: marker.position.lat,
           lng: marker.position.lng,
           title: title,
           body: body,
           url: url
-        },
-        function (data) {
+      },
+      function (data) {
           //add marker to dict
           id_as_string = String(data.story.id)
           self.vue.marker_dict[id_as_string] = marker
@@ -160,34 +160,34 @@ var app = function () {
 
           //make a new comment list for the new story
           self.vue.comment_dict[id_as_string] = []
-        }
+      }
       )
-    }, 750)
-  }
+  }, 750)
+}
 
 
-  self.marker_clicked = function (mark) {
+self.marker_clicked = function (mark) {
     if (self.vue.deletevar) {
       self.delete_story_button(mark);
-    }
   }
+}
 
 
-  self.deleteins = function () {
+self.deleteins = function () {
     self.vue.deletevar = !self.vue.deletevar;
     self.vue.is_adding = false;
-  };
+};
 
-  self.get_all_stories = function () {
+self.get_all_stories = function () {
     $.getJSON(get_all_stories_URL,
       function (data) {
         self.vue.stories = data.stories; //sets the vue variable to the list of variables
         enumerate(self.vue.stories);
-      }
+    }
     )
-  }
+}
 
-  self.place_all_markers = function (a) {
+self.place_all_markers = function (a) {
 
     $.getJSON(get_all_stories_URL,
       function (data) {
@@ -211,55 +211,59 @@ var app = function () {
 
           marker.addListener('click', function () {
             self.marker_clicked(this)
-          })
-        }
-      })
+        })
+      }
+  })
 
     self.update_heatmap();
-  }
+}
 
   //search
-  self.search_button = function () {
+  self.search_button = function (e) {
+
     if (self.vue.search_phrase != null) {
-      self.search()
+        if (e.keyCode == 13) {
+            self.search();
+        }
     } else {
       self.vue.search_results = [];
       self.vue.get_all_stories();
       self.vue.search_phrase = null;
-    }
   }
+
+}
   //search for phrases in db
   self.search = function () {
     $.getJSON(search_URL,
-      {
+    {
         search_phrase: self.vue.search_phrase
-      },
-      function (data) {
+    },
+    function (data) {
         self.vue.stories = data.results;
         self.vue.search_results = data.results;
         self.vue.search_phrase = null;
         if (self.vue.search_results.length <= 0) {alert("No stories found")}
-      }
-    )
-  }
+    }
+)
+}
 
-  self.expandins = function (story, id) {
+self.expandins = function (story, id) {
     console.log(id);
     self.vue.expandvar = !self.vue.expandvar;
     self.vue.expandstory = story;
     sessionStorage.setItem("stories_id", id.toString())
     self.vue.stories.splice(id, 1);
     enumerate(self.vue.stories);
-  };
+};
 
-  self.closeins = function () {
+self.closeins = function () {
     var index = 0;
     self.vue.expandvar = !self.vue.expandvar;
     index = sessionStorage.getItem("stories_id");
     self.vue.stories.splice(index, 0, self.vue.expandstory);
     self.vue.expandstory = null;
     enumerate(self.vue.stories);
-  };
+};
 
 
   //heatmap
@@ -279,11 +283,11 @@ var app = function () {
           google_lat_lng = new google.maps.LatLng(pos.lat, pos.long);
 
           heatmap_data_points.push(google_lat_lng);
-        }
-      })
-  };
+      }
+  })
+};
 
-  self.upload_file = function (event) {
+self.upload_file = function (event) {
     // Reads the file.
     var input = $("input#file_input")[0];
     var file = input.files[0];
@@ -303,15 +307,15 @@ var app = function () {
           req.open("PUT", put_url, true);
           req.send(file);
           self.vue.image_url = get_url;
-        });
-    }
-  };
-
-  self.toggle_heatmap = function () {
-    heatmap.setMap(heatmap.getMap() ? null : map);
+      });
   }
+};
 
-  self.upload_complete = function (get_url) {
+self.toggle_heatmap = function () {
+    heatmap.setMap(heatmap.getMap() ? null : map);
+}
+
+self.upload_complete = function (get_url) {
     // Hides the uploader div.
     self.close_uploader();
     console.log('The file was uploaded; it is now available at ' + get_url);
@@ -325,7 +329,7 @@ var app = function () {
     //     }
     // )
     // setTimeout(self.get_user_images, 750, users[0].id);
-  };
+};
 
   //like and comment stuff
   self.add_comment_button = function (post_id) {
@@ -333,38 +337,38 @@ var app = function () {
       self.vue.entering_comment = true;
       console.log(post_id);
       self.vue.commenting_post_id = post_id;
-    } else {
+  } else {
       alert("Please finish the comment you're working on!")
-    }
-
   }
 
-  self.confirm_comment = function (confirmed_comment) {
+}
+
+self.confirm_comment = function (confirmed_comment) {
     self.vue.entering_comment = false;
 
     if (confirmed_comment) {
       $.post(add_comment_URL,
-        {
+      {
           post_id: self.vue.commenting_post_id,
           comment_text: self.vue.comment_text
-        },
-        function (data) {
+      },
+      function (data) {
           id_as_string = String(self.vue.commenting_post_id)
 
           self.vue.comment_dict[id_as_string].push(data.comment);
           self.vue.get_comments(self.vue.commenting_post_id);
           self.vue.comment_text = null;
           self.vue.commenting_post_id = null;
-        }
+      }
       )
-    } else {
+  } else {
       self.vue.comment_text = null;
       self.vue.commenting_post_id = null;
-    }
-
   }
 
-  self.get_all_comments = function () {
+}
+
+self.get_all_comments = function () {
     //for all posts, call get_comments
 
     $.getJSON(get_all_stories_URL,
@@ -373,22 +377,22 @@ var app = function () {
         for (var index = 0; index < data.stories.length; index++) {
           var story = data.stories[index];
           self.get_comments(story.id)
-        }
-      })
-  }
+      }
+  })
+}
 
-  self.get_comments = function (post_id) {
+self.get_comments = function (post_id) {
     var id_as_string = String(post_id);
 
     $.getJSON(get_comments_URL,
-      {
+    {
         post_id: post_id
-      },
-      function (data) {
+    },
+    function (data) {
         self.vue.comment_dict[id_as_string] = data.comments
-      }
+    }
     )
-  }
+}
 
   // Complete as needed.
   self.vue = new Vue({
@@ -398,13 +402,13 @@ var app = function () {
     mounted: function () {
       setTimeout(function () {
         initMap(),
-          self.get_all_stories(),
-          self.place_all_markers(),
-          self.get_all_comments()
-      }, 1000);
-    },
+        self.get_all_stories(),
+        self.place_all_markers(),
+        self.get_all_comments()
+    }, 1000);
+  },
 
-    data: {
+  data: {
       is_adding: false,
       locations: [],
       stories: [],
@@ -427,8 +431,8 @@ var app = function () {
       comment_text: null,
       commenting_post_id: null,
       comment_dict: {},
-    },
-    methods: {
+  },
+  methods: {
       add_story: self.add_story,
       add_story_button: self.add_story_button,
       login_redirect: self.login_redirect,
@@ -456,10 +460,10 @@ var app = function () {
       add_comment_button: self.add_comment_button,
       get_all_comments: self.get_all_comments,
       get_comments: self.get_comments,
-    }
   }
+}
 
-  );
+);
   $("#vue-div").show();
   return self;
 }
