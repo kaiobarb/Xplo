@@ -22,14 +22,15 @@
         <div class="search-bar">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
           mdl-textfield--floating-label mdl-textfield--align-right search-bar">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <!-- SEARCH -->
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" v-model="search_phrase" style="color: black" v-on:keypress="search_button">
-            
-          </div>
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <!-- SEARCH -->
+              <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" v-model="search_phrase" style="color: black"
+                v-on:keypress="search_button">
+
+            </div>
             <button v-if="search_results.length > 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Cancel Search</button>
           </div>
         </div>
@@ -123,7 +124,7 @@
           <!-- CARD -->
           <h3 v-if="search_results.length > 0" style="color:#00c3ff; font-weight: 500">YOUR SEARCH RESULTS</h3>
           <div v-for="story in stories">
-            <div class="mdl-card mdl-shadow--4dp grow" style="max-height: 385px;">
+            <div class="mdl-card mdl-shadow--4dp grow" style="max-height: 385px;" v-on:mouseover="marker_bounce(story.id)">
               <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">${story.title}</h2>
               </div>
