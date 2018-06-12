@@ -134,7 +134,9 @@
               </div>
               <div class="mdl-card__supporting-text">
                 <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
-                ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
+                Posted by: ${story.user_first_name} ${story.user_last_name}
+                <br> Posted on: ${story.created_on}
+                <hr> ${story.body}
               </div>
               <div class="mdl-card__actions mdl-card--border">
                 <a v-on:click="expandins(story, story._idx)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
@@ -175,13 +177,15 @@
                     </button>
                   </div>
                 </div>
-                Here be comments:
+                <p>Here be comments:</p>
 
-                <div v-for="comment in comment_dict[expandstory.id]">
+
+                <div v-for="comment in comment_dict[expandstory.id] ">
                   <div>
-                    Posted by: ${comment.created_by}
+                    Commented by: ${comment.user_first_name} ${comment.user_last_name}
                     <br> Posted: ${comment.created_on}
-                    <br> ${comment.body}
+                    <br>
+                    <div style="padding-left: 5px ">${comment.body}</div>
                     <hr>
                   </div>
                 </div>

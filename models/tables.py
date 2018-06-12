@@ -14,19 +14,35 @@ def get_user_email():
     return auth.user.email if auth.user is not None else None
 
 
+def get_user_name(subname):
+    name = None
+    if subname == "first":
+        name = auth.user.first_name if auth.user else " "
+    elif subname == "last":
+        name = auth.user.last_name if auth.user else " "
+
+    return name
+
+
 db.define_table('user_stories',
                 Field('created_on', 'datetime', default=request.now),
                 Field('created_by', 'reference auth_user', default=auth.user_id),
+                Field('user_first_name', default=get_user_name("first")),
+                Field('user_last_name', default=get_user_name("last")),
                 Field('title', 'text'),
                 Field('body', 'text'),
                 Field('latitude'),
                 Field('longitude'),
-                Field('image_url')
+                Field('image_url'),
+                Field('likes', 'text', default="[]"),
+                Field('num_likes', 'integer', default="0")
                 )
 
 db.define_table('comments',
                 Field('created_on', 'datetime', default=request.now),
                 Field('created_by', 'reference auth_user', default=auth.user_id),
+                Field('user_first_name', default=get_user_name("first")),
+                Field('user_last_name', default=get_user_name("last")),
                 Field('post_id'),  # know what post it refers to
                 Field('body', 'text'),
                 )

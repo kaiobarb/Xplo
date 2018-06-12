@@ -408,10 +408,14 @@ var app = function () {
 
     var marker = self.vue.marker_dict[id_as_string]
 
-    marker.setAnimation(google.maps.Animation.BOUNCE);
+    if (marker != null) {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
 
     setTimeout(function () {
-      marker.setAnimation(null);
+      if (marker != null) {
+        marker.setAnimation(null);
+      }
     }, 250);
   }
 
