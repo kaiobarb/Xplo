@@ -172,7 +172,7 @@
             <h2 class="mdl-card__title-text">${expandstory.title}</h2>
           </div>
           <div class="mdl-card__media">
-            <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+            <div v-bind:style="{ 'background-image': 'url(' + expandstory.image_url + ')' }" class="expanded-story-image"></div>
           </div>
           <div class="mdl-card__supporting-text" style="height:400px">
             ${expandstory.body} 

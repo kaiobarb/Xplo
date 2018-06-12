@@ -86,6 +86,15 @@ div.main_content {
   background-position: center;
 }
 
+.expanded-story-image{
+  height: 200px;
+  min-height: 200px !important;
+  max-height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .mdl-card {
   height: auto;
   width: auto;
