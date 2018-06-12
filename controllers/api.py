@@ -82,3 +82,33 @@ def get_heatmap_data():
     return response.json(dict(
         heatmap_locations=heatmap_locations
     ))
+
+
+def add_comment():
+    print "in comments"
+    if request.vars is not None:
+        c_id = db.comments.insert(
+            post_id=request.vars.post_id,
+            body=request.vars.comment_text
+        )
+    return response.json(dict(comment=dict(
+        id=c_id,
+        created_by=auth.user_id,
+        post_id=request.vars.post_id,
+        body=request.vars.comment_text,
+    )))
+    # print "in com "
+    # return "k"
+
+
+def get_comments():
+    print "getting comments "
+    comments = []
+    rows = db(db.comments.post_id == request.vars.post_id).select()
+
+    for r in rows:
+        comments.append(r)
+
+    return response.json(dict(
+        comments=comments
+    ))

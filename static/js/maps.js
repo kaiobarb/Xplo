@@ -11,8 +11,7 @@ function initMap() {
     zoom: 14,
     center: santacruz,
     mapTypeControlOptions: {
-      mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-        'styled_map']
+      mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
     }
   });
 

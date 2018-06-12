@@ -25,28 +25,28 @@ var app = function () {
     }
   };
 
-    // Enumerates an array.
-    var enumerate = function(v) { var k=0; return v.map(function(e) {e._idx = k++;});};
+  // Enumerates an array.
+  var enumerate = function (v) { var k = 0; return v.map(function (e) { e._idx = k++; }); };
 
-    self.close_uploader = function () {
-        $("div#uploader_div").hide();
-        self.vue.is_uploading = false;
-        $("input#file_input").val(""); // This clears the file choice once uploaded.
-    };
+  self.close_uploader = function () {
+    $("div#uploader_div").hide();
+    self.vue.is_uploading = false;
+    $("input#file_input").val(""); // This clears the file choice once uploaded.
+  };
 
-    self.open_uploader = function () {
-        $("div#uploader_div").show();
-        self.vue.is_uploading = true;
-    };
+  self.open_uploader = function () {
+    $("div#uploader_div").show();
+    self.vue.is_uploading = true;
+  };
 
 
-    // args: a location consisting of a latitude and longitude
-    // returns: a marker object
-    self.add_story_button = function () {
-        self.is_adding = !self.is_adding;
-        self.deletevar = false;
-        self.confirm_location();
-    }
+  // args: a location consisting of a latitude and longitude
+  // returns: a marker object
+  self.add_story_button = function () {
+    self.is_adding = !self.is_adding;
+    self.deletevar = false;
+    self.confirm_location();
+  }
 
   self.placeMarker = function placeMarker(location) {
     var marker = new google.maps.Marker({
@@ -149,6 +149,9 @@ var app = function () {
         console.log(data.story.latitude + "  " + data.story.longitude)
         var google_lat_lng = new google.maps.LatLng(data.story.latitude, data.story.longitude);
         heatmap_data_points.push(google_lat_lng) //defined in maps
+
+        //make a new comment list for the new story
+        self.vue.comment_dict[id_as_string] = []
       }
     )
   }
@@ -203,10 +206,10 @@ var app = function () {
         }
       })
 
-        self.update_heatmap();
-    }
+    self.update_heatmap();
+  }
 
-     //search
+  //search
   self.search_button = function () {
     if (self.vue.search_phrase != null) {
       self.search()
@@ -228,7 +231,7 @@ var app = function () {
     )
   }
 
-  self.expandins = function (story,  id) {
+  self.expandins = function (story, id) {
     console.log(id);
     self.vue.expandvar = !self.vue.expandvar;
     self.vue.expandstory = story;
@@ -266,119 +269,191 @@ var app = function () {
           heatmap_data_points.push(google_lat_lng);
         }
       })
-    };
+  };
 
-    self.upload_file = function (event) {
-        // Reads the file.
-        var input = $("input#file_input")[0];
-        var file = input.files[0];
-        if (file) {
-            // First, gets an upload URL.
-            console.log("Trying to get the upload url");
-            $.getJSON('https://upload-dot-luca-teaching.appspot.com/start/uploader/get_upload_url',
-                function (data) {
-                    // We now have upload (and download) URLs.
-                    var put_url = data['signed_url'];
-                    var get_url = data['access_url'];
-                    console.log("Received upload url: " + put_url);
-                    // Uploads the file, using the low-level interface.
-                    var req = new XMLHttpRequest();
-                    req.addEventListener("load", self.upload_complete(get_url));
-                    // TODO: if you like, add a listener for "error" to detect failure.
-                    req.open("PUT", put_url, true);
-                    req.send(file);
-                    self.vue.image_url = get_url;
-                });
-        }
-    };
+  self.upload_file = function (event) {
+    // Reads the file.
+    var input = $("input#file_input")[0];
+    var file = input.files[0];
+    if (file) {
+      // First, gets an upload URL.
+      console.log("Trying to get the upload url");
+      $.getJSON('https://upload-dot-luca-teaching.appspot.com/start/uploader/get_upload_url',
+        function (data) {
+          // We now have upload (and download) URLs.
+          var put_url = data['signed_url'];
+          var get_url = data['access_url'];
+          console.log("Received upload url: " + put_url);
+          // Uploads the file, using the low-level interface.
+          var req = new XMLHttpRequest();
+          req.addEventListener("load", self.upload_complete(get_url));
+          // TODO: if you like, add a listener for "error" to detect failure.
+          req.open("PUT", put_url, true);
+          req.send(file);
+          self.vue.image_url = get_url;
+        });
+    }
+  };
 
-    self.toggle_heatmap = function () {
-        heatmap.setMap(heatmap.getMap() ? null : map);
+  self.toggle_heatmap = function () {
+    heatmap.setMap(heatmap.getMap() ? null : map);
+  }
+
+  self.upload_complete = function (get_url) {
+    // Hides the uploader div.
+    self.close_uploader();
+    console.log('The file was uploaded; it is now available at ' + get_url);
+    // $.post(add_image_url, { 
+    //     image_url: get_url,
+    //     image_price: self.vue.form_price,
+    //     },
+    //     function(data) {
+    //         self.vue.user_images.unshift(data);
+    //         self.vue.form_price = 0.00;
+    //     }
+    // )
+    // setTimeout(self.get_user_images, 750, users[0].id);
+  };
+
+  //like and comment stuff
+  self.add_comment_button = function (post_id) {
+    if (self.vue.commenting_post_id == null) {
+      self.vue.entering_comment = true;
+      console.log(post_id);
+      self.vue.commenting_post_id = post_id;
+    } else {
+      alert("Please finish the comment you're working on!")
     }
 
-    self.upload_complete = function(get_url) {
-        // Hides the uploader div.
-        self.close_uploader();
-        console.log('The file was uploaded; it is now available at ' + get_url);
-        // $.post(add_image_url, { 
-        //     image_url: get_url,
-        //     image_price: self.vue.form_price,
-        //     },
-        //     function(data) {
-        //         self.vue.user_images.unshift(data);
-        //         self.vue.form_price = 0.00;
-        //     }
-        // )
-        // setTimeout(self.get_user_images, 750, users[0].id);
-    };
+  }
 
-    // Complete as needed.
-    self.vue = new Vue({
-        el: "#vue-div",
-        delimiters: ['${', '}'],
-        unsafeDelimiters: ['!{', '}'],
-        mounted: function () {
-            setTimeout(function () { 
-                initMap(),
-                self.get_all_stories(),
-                self.place_all_markers()
-            }, 1000);
-        },
+  self.confirm_comment = function (confirmed_comment) {
+    self.vue.entering_comment = false;
 
-        data: {
-            is_adding: false,
-            locations: [],
-            stories: [],
-            logged_in: (sessionStorage.getItem("logged_in") == "true"),
-            confirming: false,
-            id: 0,
-            deletevar: false,
-            entering_text: false,
-            title_text: null,
-            body_text: null,
-            is_uploading: false,
-            search_phrase: null,
-            search_results: [],
-            expandvar:false,
-            expandstory:null,
-            marker_dict: {},
-            expanded_story: null,
-            image_url: "https://i.imgur.com/kla8wkX.png",
+    if (confirmed_comment) {
+      $.post(add_comment_URL,
+        {
+          post_id: self.vue.commenting_post_id,
+          comment_text: self.vue.comment_text
         },
-        methods: {
-            add_story: self.add_story,
-            add_story_button: self.add_story_button,
-            login_redirect: self.login_redirect,
-            logout_redirect: self.logout_redirect,
-            confirm_button: self.confirm_button,
-            confirm_location: self.confirm_location,
-            delMarker: self.delMarker,
-            delete_story_button: self.delete_story_button,
-            marker_clicked: self.marker_clicked,
-            deleteins: self.deleteins,
-            enter_text_button: self.enter_text_button,
-            get_all_stories: self.get_all_stories,
-            upload_file: self.upload_file,
-            upload_complete: self.upload_complete,
-            open_uploader: self.open_uploader,
-            close_uploader: self.close_uploader,
-            toggle_heatmap: self.toggle_heatmap,
-            update_heatmap: self.update_heatmap,
-            place_all_markers: self.place_all_markers,
-            closeins: self.closeins,
-            search: self.search,
-            search_button: self.search_button,
-            expandins: self.expandins,
+        function (data) {
+          id_as_string = String(self.vue.commenting_post_id)
+
+          self.vue.comment_dict[id_as_string].push(data.comment)
+
+          self.vue.comment_text = null;
+          self.vue.commenting_post_id = null;
         }
+      )
+    } else {
+      self.vue.comment_text = null;
+      self.vue.commenting_post_id = null;
+    }
+
+  }
+
+  self.get_all_comments = function () {
+    //for all posts, call get_comments
+
+    $.getJSON(get_all_stories_URL,
+      function (data) {
+
+        for (var index = 0; index < data.stories.length; index++) {
+          var story = data.stories[index];
+          self.get_comments(story.id)
+        }
+      })
+  }
+
+  self.get_comments = function (post_id) {
+    var id_as_string = String(post_id);
+
+    $.getJSON(get_comments_URL,
+      {
+        post_id: post_id
+      },
+      function (data) {
+        self.vue.comment_dict[id_as_string] = data.comments
       }
+    )
+  }
 
-    );
-    $("#vue-div").show();
-      return self;
+  // Complete as needed.
+  self.vue = new Vue({
+    el: "#vue-div",
+    delimiters: ['${', '}'],
+    unsafeDelimiters: ['!{', '}'],
+    mounted: function () {
+      setTimeout(function () {
+        initMap(),
+          self.get_all_stories(),
+          self.place_all_markers(),
+          self.get_all_comments()
+      }, 1000);
+    },
+
+    data: {
+      is_adding: false,
+      locations: [],
+      stories: [],
+      logged_in: (sessionStorage.getItem("logged_in") == "true"),
+      confirming: false,
+      id: 0,
+      deletevar: false,
+      entering_text: false,
+      title_text: null,
+      body_text: null,
+      is_uploading: false,
+      search_phrase: null,
+      search_results: [],
+      expandvar: false,
+      expandstory: null,
+      marker_dict: {},
+      expanded_story: null,
+      image_url: "https://i.imgur.com/kla8wkX.png",
+      entering_comment: false,
+      comment_text: null,
+      commenting_post_id: null,
+      comment_dict: {},
+    },
+    methods: {
+      add_story: self.add_story,
+      add_story_button: self.add_story_button,
+      login_redirect: self.login_redirect,
+      logout_redirect: self.logout_redirect,
+      confirm_button: self.confirm_button,
+      confirm_location: self.confirm_location,
+      delMarker: self.delMarker,
+      delete_story_button: self.delete_story_button,
+      marker_clicked: self.marker_clicked,
+      deleteins: self.deleteins,
+      enter_text_button: self.enter_text_button,
+      get_all_stories: self.get_all_stories,
+      upload_file: self.upload_file,
+      upload_complete: self.upload_complete,
+      open_uploader: self.open_uploader,
+      close_uploader: self.close_uploader,
+      toggle_heatmap: self.toggle_heatmap,
+      update_heatmap: self.update_heatmap,
+      place_all_markers: self.place_all_markers,
+      closeins: self.closeins,
+      search: self.search,
+      search_button: self.search_button,
+      expandins: self.expandins,
+      confirm_comment: self.confirm_comment,
+      add_comment_button: self.add_comment_button,
+      get_all_comments: self.get_all_comments,
+      get_comments: self.get_comments,
     }
-    var APP = null;
+  }
 
-    // This will make everything accessible from the js console;
-    // for instance, self.x above would be accessible as APP.x
-    jQuery(function () { APP = app(); });
+  );
+  $("#vue-div").show();
+  return self;
+}
+var APP = null;
+
+// This will make everything accessible from the js console;
+// for instance, self.x above would be accessible as APP.x
+jQuery(function () { APP = app(); });
 

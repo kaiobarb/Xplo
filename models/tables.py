@@ -24,6 +24,13 @@ db.define_table('user_stories',
                 Field('image_url')
                 )
 
+db.define_table('comments',
+                Field('created_on', 'datetime', default=request.now),
+                Field('created_by', 'reference auth_user', default=auth.user_id),
+                Field('post_id'),  # know what post it refers to
+                Field('body', 'text'),
+                )
+
 # ignore this one. may be used when/if we do the heatmap. This will just hold all the markers you add
 db.define_table('user_stories_heatmap',
                 Field('created_on', 'datetime', default=request.now),

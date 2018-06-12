@@ -6,6 +6,8 @@
   var get_all_stories_URL = "{{=URL('api', 'get_all_stories')}}"
   var search_URL = "{{=URL('api', 'search')}}"
   var get_heatmap_data_URL = "{{=URL('api', 'get_heatmap_data')}}"
+  var add_comment_URL = "{{=URL('api','add_comment')}}"
+  var get_comments_URL = "{{=URL('api','get_comments')}}"  
 </script> {{end}}
 
 <div id="vue-div" class="main_content">
@@ -14,171 +16,207 @@
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <div class="mdl-layout-spacer">
-        
-      </div>
-      <img id="logo" src="https://i.imgur.com/kla8wkX.png" style="max-width: 150px!important; left:200px!important" alt="logo">
+
+        </div>
+        <img id="logo" src="https://i.imgur.com/kla8wkX.png" style="max-width: 150px!important; left:200px!important" alt="logo">
         <div class="search-bar">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
           mdl-textfield--floating-label mdl-textfield--align-right search-bar">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <!-- SEARCH -->
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" v-model="search_phrase" style="color: black">
-            <button v-if="search_results.length <= 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" style="float: right">Search</button>
-            <button v-if="search_results.length > 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Cancel Search</button>
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <!-- SEARCH -->
+              <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" v-model="search_phrase" style="color: black">
+              <button v-if="search_results.length <= 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
+                style="float: right">Search</button>
+              <button v-if="search_results.length > 0" v-on:click="search_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Cancel Search</button>
+            </div>
           </div>
         </div>
+
+
+        <button v-if="!logged_in" @click="login_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Login
+        </button>
+        <button v-if="logged_in" @click="logout_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Logout
+        </button>
+
       </div>
-
-      
-      <button v-if="!logged_in" @click="login_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-        Login
-      </button>
-      <button v-if="logged_in" @click="logout_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-        Logout
-      </button>
-
+    </header>
+    <!-- DRAWER -->
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Options</span>
+      <nav class="mdl-navigation">
+        <button v-on:click="toggle_heatmap" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Toggle Heatmap
+        </button>
+      </nav>
     </div>
-  </header>
-  <!-- DRAWER -->
-  <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Options</span>
-    <nav class="mdl-navigation">
-      <button v-on:click="toggle_heatmap" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-        Toggle Heatmap
-      </button>
-    </nav>
-  </div>
 
-  <main class="mdl-layout__content" id="wrapper">
-    <div id="map-overlay" class="cover">
-      <!-- CONFIRM DIV -->
-      <div id="confirm-location-container" v-if="confirming" class="absolute">
-        <div class="mdl-card mdl-shadow--4dp" class="bottom-popup">
-          <div class="mdl-card__supporting-text">
-            Do you want to place a marker at this location?
-          </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <a v-on:click="confirm_button(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              Yes
-            </a>
-            <a v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              No
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="entering_text" class="dim cover">
-        <div class="card-wide mdl-card mdl-shadow--2dp" v-on:blur="confirm_button(false)">
-          <div class="container padded">
-            <div class="mdl-card__title half padded">
-            <div class=" mdl-textfield mdl-js-textfield">
-              <input id="title_text_area" v-model="title_text" type="text" class="mdl-textfield__input">
-              <label class="mdl-textfield__label" for="title_text_area">Title</label>
-            </div>
-          </div>
-          <div class="half">
-            <div id="uploader_div">
-              Upload an image file: <input id="file_input" type="file" accept="image/jpeg"> <br>
-              <button v-on:click="upload_file" class="mdl-button mdl-js-button mdl-button--primary">Upload Image</button>
-            </div>
-          </div>
-        </div>
-          
-
-          <div class="mdl-card__supporting-text">
-            <textarea id="body_text_area" v-model="body_text" cols="1" rows="2" placeholder="Enter the body here"></textarea>
-          </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <button v-on:click="enter_text_button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              Share your story with the world!
-            </button>
-            <button v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- BUTTON -->
-      <!-- Colored FAB button -->
-      <div v-show="logged_in" id="button-bar">
-        <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-          <i class="material-icons">add</i>
-        </button>
-        <button v-on:click="deleteins" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-          <i class="material-icons">delete</i>
-        </button>
-      </div>
-
-      <!-- SEARCH RESULTS -->
-      <div v-if="search_results.length > 0" id="card-container" style="right:500px" class="no-scrollbar">
-        <!-- CARD -->
-        <h3>YOUR SEARCH RESULTS</h3>
-        <div v-for="story in search_results">
-          <div class="mdl-card mdl-shadow--4dp">
-            <div class="mdl-card__title">
-              <h2 class="mdl-card__title-text">${story.title}</h2>
-            </div>
-            <div class="mdl-card__media">
-              <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
-            </div>
+    <main class="mdl-layout__content" id="wrapper">
+      <div id="map-overlay" class="cover">
+        <!-- CONFIRM DIV -->
+        <div id="confirm-location-container" v-if="confirming" class="absolute">
+          <div class="mdl-card mdl-shadow--4dp" class="bottom-popup">
             <div class="mdl-card__supporting-text">
-              <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
-              ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
-            </div>
-            <div class="mdl-card__actions">
-              <a href="(URL or function)">Related Action</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- CARD CONTAINER -->
-      <div id="card-container" class="column">
-        <!-- CARD -->
-        <div v-for="story in stories">
-          <div class="mdl-card mdl-shadow--4dp grow" v-on:click="expandins(story, story._idx)">
-            <div class="mdl-card__title">
-              <h2 class="mdl-card__title-text">${story.title}</h2>
-            </div>
-            <div class="mdl-card__media story-image">
-              <!-- v-bind:src="story.image_url" -->
-              <div v-bind:style="{ 'background-image': 'url(' + story.image_url + ')' }" border="0" alt="photo" class="story-image"></div>
-            </div>
-            <div class="mdl-card__supporting-text">
-              <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
-              ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
-            </div>
-            <div class="mdl-card__actions">
-              <a href="(URL or function)">Related Action</a>
+              Do you want to place a marker at this location?
             </div>
             <div class="mdl-card__actions mdl-card--border">
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                Expand
+              <a v-on:click="confirm_button(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Yes
+              </a>
+              <a v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                No
               </a>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- EXPANDED CARD -->
-      <div id="expanded-card-container" class="no-scrollbar" v-if="expandvar">
-        <div id="expanded-card" class="mdl-card mdl-shadow--4dp">
-          <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">${expandstory.title}</h2>
+        <div v-if="entering_text" class="dim cover">
+          <div class="card-wide mdl-card mdl-shadow--2dp" v-on:blur="confirm_button(false)">
+            <div class="container padded">
+              <div class="mdl-card__title half padded">
+                <div class=" mdl-textfield mdl-js-textfield">
+                  <input id="title_text_area" v-model="title_text" type="text" class="mdl-textfield__input">
+                  <label class="mdl-textfield__label" for="title_text_area">Title</label>
+                </div>
+              </div>
+              <div class="half">
+                <div id="uploader_div">
+                  Upload an image file:
+                  <input id="file_input" type="file" accept="image/jpeg">
+                  <br>
+                  <button v-on:click="upload_file" class="mdl-button mdl-js-button mdl-button--primary">Upload Image</button>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="mdl-card__supporting-text">
+              <textarea id="body_text_area" v-model="body_text" cols="1" rows="2" placeholder="Enter the body here"></textarea>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+              <button v-on:click="enter_text_button" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Share your story with the world!
+              </button>
+              <button v-on:click="confirm_button(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Cancel
+              </button>
+            </div>
           </div>
-          <div class="mdl-card__media">
-            <div v-bind:style="{ 'background-image': 'url(' + expandstory.image_url + ')' }" class="expanded-story-image"></div>
+        </div>
+
+        <!-- ENTER TEXT FOR THE COMMMENT -->
+        <div v-if="entering_comment">
+          <div class="card-wide mdl-card mdl-shadow--2dp" v-on:blur="confirm_button(false)">
+            <div class="mdl-card__supporting-text">
+              <textarea id="body_text_area" v-model="comment_text" cols="1" rows="2" placeholder="Write a comment..."></textarea>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+              <button v-on:click="confirm_comment(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Share your comment!
+              </button>
+              <button v-on:click="confirm_comment(false)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                Cancel
+              </button>
+            </div>
           </div>
-          <div class="mdl-card__supporting-text" style="height:400px">
-            ${expandstory.body} 
+        </div>
+
+        <!-- BUTTON -->
+        <!-- Colored FAB button -->
+        <div v-show="logged_in" id="button-bar">
+          <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+            <i class="material-icons">add</i>
+          </button>
+          <button v-on:click="deleteins" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+            <i class="material-icons">delete</i>
+          </button>
+        </div>
+
+        <!-- SEARCH RESULTS -->
+        <div v-if="search_results.length > 0" id="card-container" style="right:500px" class="no-scrollbar">
+          <!-- CARD -->
+          <h3>YOUR SEARCH RESULTS</h3>
+          <div v-for="story in search_results">
+            <div class="mdl-card mdl-shadow--4dp">
+              <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">${story.title}</h2>
+              </div>
+              <div class="mdl-card__media">
+                <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
+              </div>
+              <div class="mdl-card__supporting-text">
+                <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
+                ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
+              </div>
+              <div class="mdl-card__actions">
+                <a href="(URL or function)">Related Action</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- CARD CONTAINER -->
+        <div id="card-container" class="column">
+          <!-- CARD -->
+          <div v-for="story in stories">
+            <div class="mdl-card mdl-shadow--4dp grow" v-on:click="expandins(story, story._idx)">
+              <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">${story.title}</h2>
+              </div>
+              <div class="mdl-card__media story-image">
+                <!-- v-bind:src="story.image_url" -->
+                <div v-bind:style="{ 'background-image': 'url(' + story.image_url + ')' }" border="0" alt="photo" class="story-image"></div>
+              </div>
+              <div class="mdl-card__supporting-text">
+                <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
+                ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
+              </div>
+              <div class="mdl-card__actions">
+                <a href="(URL or function)">Related Action</a>
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                  Expand
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EXPANDED CARD -->
+        <div id="expanded-card-container" class="no-scrollbar" v-if="expandvar">
+          <div id="expanded-card" class="mdl-card mdl-shadow--4dp">
+            <div class="mdl-card__title">
+              <h2 class="mdl-card__title-text">${expandstory.title}</h2>
+            </div>
+            <div class="mdl-card__media">
+              <div v-bind:style="{ 'background-image': 'url(' + expandstory.image_url + ')' }" class="expanded-story-image"></div>
+            </div>
+            <div class="mdl-card__supporting-text" style="height:400px">
+              ${expandstory.body}
+
+              <hr>
+              <div>
+                here be comments:
+
+                <div v-for="comment in comment_dict[expandstory.id]">
+                  <div>
+                    Posted by: ${comment.created_by}
+                    <br> Posted: ${comment.created_on}
+                    <br> ${comment.body}
+                    <hr>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
           </div>
           <div class="mdl-card__actions">
-            <a href="(URL or function)">Related Action</a>
+            <a v-on:click="add_comment_button(expandstory.id)">Add comment</a>
           </div>
           <div class="mdl-card__actions mdl-card--border" v-on:click="closeins">
             <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
@@ -188,9 +226,9 @@
         </div>
       </div>
 
-    </div>
-    <!-- MAP -->
-    <div class="page-content" id="map"></div>
+  </div>
+  <!-- MAP -->
+  <div class="page-content" id="map"></div>
   </main>
 
 </div>
