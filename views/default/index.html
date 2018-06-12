@@ -145,7 +145,7 @@
       <div id="card-container" class="column">
         <!-- CARD -->
         <div v-for="story in stories">
-          <div class="mdl-card mdl-shadow--4dp">
+          <div class="mdl-card mdl-shadow--4dp" v-if="!expandvar">
             <div class="mdl-card__title">
               <h2 class="mdl-card__title-text">${story.title}</h2>
             </div>
@@ -178,7 +178,7 @@
             <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
           </div>
           <div class="mdl-card__supporting-text" style="height:400px">
-            ${expandstory.body} User ID: ${expandstory.created_by} Time: ${expandstory.created_on}
+            ${expandstory.body} 
           </div>
           <div class="mdl-card__actions">
             <a href="(URL or function)">Related Action</a>
