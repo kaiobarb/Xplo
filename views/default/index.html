@@ -13,7 +13,7 @@
     <!--HEADER -->
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-
+        <!-- SEARCH -->
         <div id="search">
           <input type="text" v-model="search_phrase">
           <button v-if="search_results.length <= 0" v-on:click="search_button">Search</button>
@@ -29,9 +29,6 @@
         <button v-if="logged_in" @click="logout_redirect()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
           Logout
         </button>
-        <button v-on:click="toggle_heatmap" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-          Toggle Heatmap
-        </button>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
         mdl-textfield--floating-label mdl-textfield--align-right">
         <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
@@ -45,23 +42,11 @@
   </header>
   <!-- DRAWER -->
   <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Stories</span>
+    <span class="mdl-layout-title">Options</span>
     <nav class="mdl-navigation">
-      <!-- CARD -->
-      <div class="mdl-card mdl-shadow--4dp">
-        <div class="mdl-card__title">
-          <h2 class="mdl-card__title-text">title Text Goes Here</h2>
-        </div>
-        <div class="mdl-card__media">
-          <img src="photo.jpg" width="220" height="140" border="0" alt="" style="padding:20px;">
-        </div>
-        <div class="mdl-card__supporting-text">
-          This text might describe the photo and provide further information, such as where and when it was taken.
-        </div>
-        <div class="mdl-card__actions">
-          <a href="(URL or function)">Related Action</a>
-        </div>
-      </div>
+      <button v-on:click="toggle_heatmap" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+          Toggle Heatmap
+        </button>
     </nav>
   </div>
 
