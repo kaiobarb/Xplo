@@ -20,12 +20,6 @@ function initMap() {
     data: heatmap_data_points
   });
 
-  var marker = new google.maps.Marker({
-    position: santacruz,
-    map: map,
-    animation: google.maps.Animation.DROP,
-  });
-
   var styledMapType = new google.maps.StyledMapType(
     [
       {
