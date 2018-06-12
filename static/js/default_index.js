@@ -172,6 +172,10 @@ var app = function () {
   self.marker_clicked = function (mark) {
     if (self.vue.deletevar) {
       self.delete_story_button(mark);
+    } else {
+      document.getElementById(mark.story_id).scrollIntoView({ behavior: "smooth" });
+      mark.setAnimation(google.maps.Animation.BOUNCE);
+      mark.setAnimation(null);
     }
   }
 
@@ -419,6 +423,34 @@ var app = function () {
     }, 250);
   }
 
+  //liking
+  self.liked = function (post_id, user_id) {
+    console.log(user_id)
+
+    $.post(liked_URL,
+      {
+        user_id: user_id,
+        post_id: post_id
+      },
+      function (data) {
+
+        var list = JSON.parse(data.liked_list)
+        list.push(user_id)
+        $.post(liked_update_URL,
+          {
+            new_list: JSON.stringify(list),
+            post_id: post_id
+          }, function (data) {
+            id_as_string = String(post_id)
+            self.vue.like_dict[id_as_string] = list
+          }
+
+        )
+
+      }
+    )
+  }
+
 
   // Complete as needed.
   self.vue = new Vue({
@@ -457,6 +489,8 @@ var app = function () {
       comment_text: null,
       commenting_post_id: null,
       comment_dict: {},
+      like_dict: {},
+
     },
     methods: {
       add_story: self.add_story,
@@ -487,6 +521,8 @@ var app = function () {
       get_all_comments: self.get_all_comments,
       get_comments: self.get_comments,
       marker_bounce: self.marker_bounce,
+      liked: self.liked,
+
     }
   }
 
