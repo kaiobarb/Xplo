@@ -99,8 +99,13 @@ var app = function () {
   };
 
 
-  self.delete_story_button = function (marker) {
+  self.delete_story_button = function (id) {
     //map.addListener(marker, 'click', function (point) { id = this.__gm_id; self.delMarker(id)});
+    self.vue.deletevar = !self.vue.deletevar;
+    self.vue.is_adding = false;
+    id_as_string = String(id);
+    console.log(id_as_string);
+    var marker = self.vue.marker_dict[id_as_string];
     marker.setMap(null);
     $.post(delete_url,
       {
@@ -260,11 +265,11 @@ var app = function () {
     $.getJSON(get_heatmap_data_URL,
       function (data) {
         //NOTE:
-        //data.heatmap_locations is dicts of lat/long 
+        //data.heatmap_locations is dicts of lat/long
         //  data.heatmap_locations = [{lat=,long=},{lat=,long=}...]
 
         heatmap_data_points.clear();
-        //heatmap_data_points is defined at top of maps.js 
+        //heatmap_data_points is defined at top of maps.js
 
         for (var i = 0; i < data.heatmap_locations.length; i++) {
           pos = data.heatmap_locations[i];
@@ -307,7 +312,7 @@ var app = function () {
     // Hides the uploader div.
     self.close_uploader();
     console.log('The file was uploaded; it is now available at ' + get_url);
-    // $.post(add_image_url, { 
+    // $.post(add_image_url, {
     //     image_url: get_url,
     //     image_price: self.vue.form_price,
     //     },
@@ -460,4 +465,3 @@ var APP = null;
 // This will make everything accessible from the js console;
 // for instance, self.x above would be accessible as APP.x
 jQuery(function () { APP = app(); });
-

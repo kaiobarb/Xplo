@@ -7,7 +7,7 @@
   var search_URL = "{{=URL('api', 'search')}}"
   var get_heatmap_data_URL = "{{=URL('api', 'get_heatmap_data')}}"
   var add_comment_URL = "{{=URL('api','add_comment')}}"
-  var get_comments_URL = "{{=URL('api','get_comments')}}"  
+  var get_comments_URL = "{{=URL('api','get_comments')}}"
 </script> {{end}}
 
 <div id="vue-div" class="main_content">
@@ -131,9 +131,6 @@
           <button v-on:click="add_story_button()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
             <i class="material-icons">add</i>
           </button>
-          <button v-on:click="deleteins" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-            <i class="material-icons">delete</i>
-          </button>
         </div>
 
         <!-- SEARCH RESULTS -->
@@ -162,7 +159,7 @@
         <div id="card-container" class="column">
           <!-- CARD -->
           <div v-for="story in stories">
-            <div class="mdl-card mdl-shadow--4dp grow" v-on:click="expandins(story, story._idx)">
+            <div class="mdl-card mdl-shadow--4dp grow">
               <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">${story.title}</h2>
               </div>
@@ -174,14 +171,19 @@
                 <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
                 ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
               </div>
-              <div class="mdl-card__actions">
-                <a href="(URL or function)">Related Action</a>
-              </div>
-              <div class="mdl-card__actions mdl-card--border">
+              <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story, story._idx)">
                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                  Expand
+                Expand
                 </a>
               </div>
+              <div v-if="story.created_by == '{{=auth.user_id}}'">
+                <div class="mdl-card__actions mdl-card--border" v-on:click="delete_story_button(story.id)">
+                  <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                  Delete
+                  </a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
