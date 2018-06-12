@@ -20,7 +20,8 @@ db.define_table('user_stories',
                 Field('title', 'text'),
                 Field('body', 'text'),
                 Field('latitude'),
-                Field('longitude')
+                Field('longitude'),
+                Field('image_url')
                 )
 
 # ignore this one. may be used when/if we do the heatmap. This will just hold all the markers you add

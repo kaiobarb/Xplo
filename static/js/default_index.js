@@ -116,14 +116,15 @@ var app = function () {
 
   self.enter_text_button = function () {
     self.vue.entering_text = false;
-    self.add_story(placed_marker, self.vue.title_text, self.vue.body_text);
+    self.add_story(placed_marker, self.vue.title_text, self.vue.body_text, self.vue.image_url);
 
+    self.vue.image_url = null;
     self.vue.title_text = null;
     self.vue.body_text = null;
     placed_marker = null;
   }
 
-  self.add_story = function (marker, title, body) {
+  self.add_story = function (marker, title, body, url) {
 
     marker.addListener('click', function () {
       self.marker_clicked(this)
@@ -134,7 +135,8 @@ var app = function () {
         lat: marker.position.lat,
         lng: marker.position.lng,
         title: title,
-        body: body
+        body: body,
+        url: url
       },
       function (data) {
         //add marker to dict
@@ -269,7 +271,6 @@ var app = function () {
     self.upload_file = function (event) {
         // Reads the file.
         var input = $("input#file_input")[0];
-        console.log(event);
         var file = input.files[0];
         if (file) {
             // First, gets an upload URL.
@@ -286,6 +287,7 @@ var app = function () {
                     // TODO: if you like, add a listener for "error" to detect failure.
                     req.open("PUT", put_url, true);
                     req.send(file);
+                    self.vue.image_url = get_url;
                 });
         }
     };
@@ -341,6 +343,7 @@ var app = function () {
             expandstory:null,
             marker_dict: {},
             expanded_story: null,
+            image_url: "https://i.imgur.com/kla8wkX.png",
         },
         methods: {
             add_story: self.add_story,

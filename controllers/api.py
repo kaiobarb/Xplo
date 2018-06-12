@@ -11,6 +11,7 @@ def add_story():
             longitude=request.vars.lng,
             title=request.vars.title,
             body=request.vars.body,
+            image_url=request.vars.url
         )
 
         heat_id = db.user_stories_heatmap.insert(
@@ -28,6 +29,7 @@ def add_story():
         created_by=auth.user_id,
         title=request.vars.title,
         body=request.vars.body,
+        image_url=request.vars.url
     )))
 
 
