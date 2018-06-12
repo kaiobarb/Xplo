@@ -126,34 +126,38 @@ var app = function () {
 
   self.add_story = function (marker, title, body, url) {
 
-    marker.addListener('click', function () {
-      self.marker_clicked(this)
-    })
+    setTimeout(function () {
 
-    $.post(add_story_url,
-      {
-        lat: marker.position.lat,
-        lng: marker.position.lng,
-        title: title,
-        body: body,
-        url: url
-      },
-      function (data) {
-        //add marker to dict
-        id_as_string = String(data.story.id)
-        self.vue.marker_dict[id_as_string] = marker
 
-        self.get_all_stories(); //update the stories list
+      marker.addListener('click', function () {
+        self.marker_clicked(this)
+      })
 
-        //add it to the heatmap info
-        console.log(data.story.latitude + "  " + data.story.longitude)
-        var google_lat_lng = new google.maps.LatLng(data.story.latitude, data.story.longitude);
-        heatmap_data_points.push(google_lat_lng) //defined in maps
+      $.post(add_story_url,
+        {
+          lat: marker.position.lat,
+          lng: marker.position.lng,
+          title: title,
+          body: body,
+          url: url
+        },
+        function (data) {
+          //add marker to dict
+          id_as_string = String(data.story.id)
+          self.vue.marker_dict[id_as_string] = marker
 
-        //make a new comment list for the new story
-        self.vue.comment_dict[id_as_string] = []
-      }
-    )
+          self.get_all_stories(); //update the stories list
+
+          //add it to the heatmap info
+          console.log(data.story.latitude + "  " + data.story.longitude)
+          var google_lat_lng = new google.maps.LatLng(data.story.latitude, data.story.longitude);
+          heatmap_data_points.push(google_lat_lng) //defined in maps
+
+          //make a new comment list for the new story
+          self.vue.comment_dict[id_as_string] = []
+        }
+      )
+    }, 750)
   }
 
 
