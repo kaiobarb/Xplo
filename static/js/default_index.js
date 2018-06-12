@@ -109,8 +109,9 @@ var app = function () {
     marker.setMap(null);
     $.post(delete_url,
       {
-        lat: marker.position.lat,
-        lng: marker.position.lng,
+        // lat: marker.position.lat,
+        // lng: marker.position.lng,
+        post_id: id
       },
       function (data) {
         delete self.vue.marker_dict[id_as_string];
@@ -237,10 +238,15 @@ var app = function () {
         search_phrase: self.vue.search_phrase
       },
       function (data) {
-        self.vue.stories = data.results;
         self.vue.search_results = data.results;
         self.vue.search_phrase = null;
-        if (self.vue.search_results.length <= 0) {alert("No stories found")}
+
+        if (self.vue.search_results.length <= 0) {
+          alert("No stories found")
+        } else {
+          self.vue.stories = data.results;
+        }
+
       }
     )
   }
