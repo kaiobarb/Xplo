@@ -135,8 +135,8 @@
               <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->
               ${story.body} User ID: ${story.created_by} Time: ${story.created_on}
             </div>
-            <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story, story._idx)">
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            <div class="mdl-card__actions mdl-card--border" >
+              <a v-on:click="expandins(story, story._idx)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                 Expand
               </a>
               <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-if="story.created_by == '{{=auth.user_id}}'" v-on:click="delete_story_button(story.id)">

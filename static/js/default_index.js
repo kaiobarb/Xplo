@@ -220,7 +220,6 @@ self.place_all_markers = function (a) {
 
   //search
   self.search_button = function (e) {
-
     if (self.vue.search_phrase != null) {
         if (e.keyCode == 13) {
             self.search();
