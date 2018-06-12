@@ -25,6 +25,9 @@ var app = function () {
     }
   };
 
+    // Enumerates an array.
+    var enumerate = function(v) { var k=0; return v.map(function(e) {e._idx = k++;});};
+
     self.close_uploader = function () {
         $("div#uploader_div").hide();
         self.vue.is_uploading = false;
@@ -164,7 +167,8 @@ var app = function () {
   self.get_all_stories = function () {
     $.getJSON(get_all_stories_URL,
       function (data) {
-        self.vue.stories = data.stories //sets the vue variable to the list of variables
+        self.vue.stories = data.stories; //sets the vue variable to the list of variables
+        enumerate(self.vue.stories);
       }
     )
   }
