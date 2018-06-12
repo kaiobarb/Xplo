@@ -145,7 +145,7 @@
       <div id="card-container" class="column">
         <!-- CARD -->
         <div v-for="story in stories">
-          <div class="mdl-card mdl-shadow--4dp" v-if="!expandvar">
+          <div class="mdl-card mdl-shadow--4dp">
             <div class="mdl-card__title">
               <h2 class="mdl-card__title-text">${story.title}</h2>
             </div>
@@ -159,7 +159,7 @@
             <div class="mdl-card__actions">
               <a href="(URL or function)">Related Action</a>
             </div>
-            <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story)">
+            <div class="mdl-card__actions mdl-card--border" v-on:click="expandins(story, story._idx)">
               <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                 Expand
               </a>

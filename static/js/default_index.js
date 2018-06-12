@@ -226,18 +226,22 @@ var app = function () {
     )
   }
 
-  self.expandins = function (store) {
+  self.expandins = function (story,  id) {
+    console.log(id);
     self.vue.expandvar = !self.vue.expandvar;
-    self.vue.expandstory = store;
-    console.log(self.vue.expandvar);
-    console.log(self.vue.expandstory.created_by);
+    self.vue.expandstory = story;
+    sessionStorage.setItem("stories_id", id.toString())
+    self.vue.stories.splice(id, 1);
+    enumerate(self.vue.stories);
   };
 
   self.closeins = function () {
+    var index = 0;
     self.vue.expandvar = !self.vue.expandvar;
+    index = sessionStorage.getItem("stories_id");
+    self.vue.stories.splice(index, 0, self.vue.expandstory);
     self.vue.expandstory = null;
-    console.log(self.vue.expandvar);
-    console.log(self.vue.expandstory);
+    enumerate(self.vue.stories);
   };
 
 
@@ -336,6 +340,7 @@ var app = function () {
             expandvar:false,
             expandstory:null,
             marker_dict: {},
+            expanded_story: null,
         },
         methods: {
             add_story: self.add_story,
