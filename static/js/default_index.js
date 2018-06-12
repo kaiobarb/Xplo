@@ -151,8 +151,9 @@ var app = function () {
         },
         function (data) {
           //add marker to dict
-          id_as_string = String(data.story.id)
-          self.vue.marker_dict[id_as_string] = marker
+          id_as_string = String(data.story.id);
+          self.vue.marker_dict[id_as_string] = marker;
+          marker.story_id = data.story.id;
 
           self.get_all_stories(); //update the stories list
 
@@ -172,7 +173,10 @@ var app = function () {
   self.marker_clicked = function (mark) {
     if (self.vue.deletevar) {
       self.delete_story_button(mark);
+    } else {
+        document.getElementById(mark.story_id).scrollIntoView({behavior:"smooth"});
     }
+
   }
 
 
@@ -207,6 +211,7 @@ var app = function () {
 
           marker = self.placeMarker(latlong);
           marker.setAnimation(google.maps.Animation.DROP);
+          marker.story_id = story.id;
 
           //add the marker object to the dict
           var id_as_string = String(story.id)
