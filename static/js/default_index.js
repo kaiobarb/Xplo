@@ -25,13 +25,6 @@ var app = function () {
     }
   };
 
-    // Extends an array
-    self.extend = function (a, b) {
-        for (var i = 0; i < b.length; i++) {
-            a.push(b[i]);
-        }
-    };
-
     self.close_uploader = function () {
         $("div#uploader_div").hide();
         self.vue.is_uploading = false;
@@ -48,6 +41,7 @@ var app = function () {
     // returns: a marker object
     self.add_story_button = function () {
         self.is_adding = !self.is_adding;
+        self.deletevar = false;
         self.confirm_location();
     }
 
@@ -164,6 +158,7 @@ var app = function () {
 
   self.deleteins = function () {
     self.vue.deletevar = !self.vue.deletevar;
+    self.vue.is_adding = false;
   };
 
   self.get_all_stories = function () {
@@ -201,6 +196,8 @@ var app = function () {
           })
         }
       })
+
+        self.update_heatmap();
     }
 
      //search
@@ -257,8 +254,6 @@ var app = function () {
           google_lat_lng = new google.maps.LatLng(pos.lat, pos.long);
 
           heatmap_data_points.push(google_lat_lng);
-          // heatmap_data_points.push({ location: google_lat_lng, weight: 5 })
-
         }
       })
     };
