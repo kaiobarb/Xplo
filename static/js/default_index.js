@@ -226,6 +226,7 @@ var app = function () {
       self.search()
     } else {
       self.vue.search_results = [];
+      self.vue.get_all_stories();
       self.vue.search_phrase = null;
     }
   }
@@ -236,8 +237,10 @@ var app = function () {
         search_phrase: self.vue.search_phrase
       },
       function (data) {
+        self.vue.stories = data.results;
         self.vue.search_results = data.results;
         self.vue.search_phrase = null;
+        if (self.vue.search_results.length <= 0) {alert("No stories found")}
       }
     )
   }
@@ -350,8 +353,8 @@ var app = function () {
         function (data) {
           id_as_string = String(self.vue.commenting_post_id)
 
-          self.vue.comment_dict[id_as_string].push(data.comment)
-
+          self.vue.comment_dict[id_as_string].push(data.comment);
+          self.vue.get_comments(self.vue.commenting_post_id);
           self.vue.comment_text = null;
           self.vue.commenting_post_id = null;
         }
