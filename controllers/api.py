@@ -34,7 +34,8 @@ def add_story():
 
 
 def delete_story():
-    db((db.user_stories.latitude == request.vars.lat) & (db.user_stories.longitude == request.vars.lng)).delete()
+    # db((db.user_stories.latitude == request.vars.lat) & (db.user_stories.longitude == request.vars.lng)).delete()
+    db(db.user_stories.id == request.vars.post_id).delete()
     return "ok"
 
 
