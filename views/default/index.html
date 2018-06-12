@@ -145,8 +145,9 @@
             <div class="mdl-card__title">
               <h2 class="mdl-card__title-text">${story.title}</h2>
             </div>
-            <div class="mdl-card__media">
-              <img v-bind:src="story.image_url"  width="220" height="140" border="0" alt="photo" style="padding:20px;">
+            <div class="mdl-card__media story-image">
+              <!-- v-bind:src="story.image_url" -->
+              <div v-bind:style="{ 'background-image': 'url(' + story.image_url + ')' }" border="0" alt="photo" class="story-image"></div>
             </div>
             <div class="mdl-card__supporting-text">
               <!-- This text might describe the photo and provide further information, such as where and when it was taken. -->

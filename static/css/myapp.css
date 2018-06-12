@@ -79,6 +79,13 @@ div.main_content {
   min-width: 50%
 }
 
+.story-image{
+  height: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .mdl-card {
   height: auto;
   width: auto;
