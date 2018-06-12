@@ -113,6 +113,8 @@ var app = function () {
         lng: marker.position.lng,
       },
       function (data) {
+        delete self.vue.marker_dict[id_as_string];
+        delete self.vue.comment_dict[id_as_string];
         self.get_all_stories(); //update list
       }
     )
