@@ -175,6 +175,8 @@ var app = function () {
       self.delete_story_button(mark);
     } else {
         document.getElementById(mark.story_id).scrollIntoView({behavior:"smooth"});
+        mark.setAnimation(google.maps.Animation.BOUNCE);
+        mark.setAnimation(null);
     }
 
   }
