@@ -1,7 +1,4 @@
-<html>
- <div style="background-color:#536dfe;display:block;width:100%">
-  <img align="center" src="https://i.imgur.com/kla8wkX.png/"></div>
-</html>
+![xplo_logo](https://i.imgur.com/U0yf2OU.png)
 # Xplo
 Tell a story, find a place.
 
@@ -47,7 +44,7 @@ We were able to implement many of the features we had thought of, but some were 
 ### Conclusion
 This project was incredibly useful for as, as we learned a lot about building dynamic websites. Our knowledge of git and servers went up exponentially, and we are grateful to have taken this class. We believe the core concept of exploring places through stories offer great potential for growth, and we hope to continue development on this project.
 
-###Developers
+### Developers
 - Pranav Salunke
 - Kaio Barbosa
 - Srijitha Somangili
