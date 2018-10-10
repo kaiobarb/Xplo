@@ -2,7 +2,7 @@
 # Xplo
 Tell a story, find a place.
 
-Our website is hosted [here](xplo.pythonanywhere.com/Xplo)
+Our website is hosted [here](kaiobarb.pythonanywhere.com/Xplo)
 
 ### Our Story
 
